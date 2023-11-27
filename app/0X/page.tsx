@@ -1,36 +1,48 @@
 'use client'
-import { useState } from "react";
-import PriceView from "./Price";
-import QuoteView from "./Quote";
-import type { PriceResponse } from "./api/types";
-import { useAccount } from "wagmi";
 
-export default function Home() {
-  const [tradeDirection, setTradeDirection] = useState("sell");
-  const [finalize, setFinalize] = useState(false);
-  const [price, setPrice] = useState<PriceResponse | undefined>();
-  const [quote, setQuote] = useState();
-  const { address } = useAccount();
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import { WagmiConfig, createConfig } from "wagmi";
+import {
+  ConnectKitProvider,
+  ConnectKitButton,
+  getDefaultConfig,
+} from "connectkit";
+import { useEffect, useState } from "react";
+
+const config = createConfig(
+  getDefaultConfig({
+    // Required API Keys
+    // alchemyId: "MzUaa0A87yexjd8UKcHm8HIr1f4aghxT",
+    // walletConnectProjectId: "a8024e8262cb4e7102941a3577b5a5c0",
+
+    alchemyId: "EuL5KyMLLBrMyNbZW9CgtiSy45_bh24c",
+    walletConnectProjectId: "2c23de9d13468896a8a189e8f56ba34e",
+
+    // Required
+    appName: "SponsorCoindev Demo App",
+
+    // Optional
+    appDescription: "A Next.js demo app for 0x Swap API and ConnectKit",
+  })
+);
+
+export default function App({ Component, pageProps }: AppProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24`}
+    <div
+      style={{
+        padding: "20px",
+      }}
     >
-      {finalize && price ? (
-        <QuoteView
-          takerAddress={address}
-          price={price}
-          quote={quote}
-          setQuote={setQuote}
-        />
-      ) : (
-        <PriceView
-          takerAddress={address}
-          price={price}
-          setPrice={setPrice}
-          setFinalize={setFinalize}
-        />
-      )}
-    </main>
+      <WagmiConfig config={config}>
+        <ConnectKitProvider>
+          <ConnectKitButton />
+          {mounted && <Component {...pageProps} />}
+        </ConnectKitProvider>
+      </WagmiConfig>
+    </div>
   );
 }

@@ -15,9 +15,9 @@ export default function RootLayout({
         children: React.ReactNode
     }) {
     return (
-        <header>
-            <Title />
+        <div>
+            <Title address={undefined} isConnected={undefined} connect={undefined} headerType={''} />
             {children}
-        </header>
+        </div>
     )
 }

@@ -1,7 +1,5 @@
 import React from 'react'
-import MoralisHeader from './spCoinHeader';
-import TestHeader from '../testModal/testHeader';
-import styles from "../../styles/App.module.css";
+import MoralisHeader from './0XHeader';
 
 function Header(props: { address: any; isConnected: any; connect: any; headerType: string}) {
   const {address, isConnected, connect, headerType} = props;

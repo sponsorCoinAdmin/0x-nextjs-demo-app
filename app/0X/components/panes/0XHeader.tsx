@@ -1,7 +1,7 @@
 import React from "react";
 // import styles from "../../styles/Header.module.css";
 import styles from "../../styles/Header.module.css";
-import moralis_png from '../images/moralis.png'
+import _0X_png from '../images/0X.png'
 import eth_png from '../images/eth.png'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,7 +10,7 @@ function MoralisHeader(address: string, isConnected: any, connect: React.MouseEv
   return (
     <>
       <div className={styles.leftH}>
-        <Image src={moralis_png} width={25} height={25} alt="Sponsor Coin Logo" />
+        <Image src={_0X_png} width={25} height={25} alt="Sponsor Coin Logo" />
         <div className={styles.headerItem}><Link href="/Recipients">Recipients</Link></div>
         <div className={styles.headerItem}><Link href="/Agents">Agents</Link></div>
         <div className={styles.headerItem}><Link href="/Tokens">Tokens</Link></div>

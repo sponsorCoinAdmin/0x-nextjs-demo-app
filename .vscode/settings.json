@@ -3,6 +3,7 @@
         "antd",
         "connectkit",
         "moralis",
+        "nextjs",
         "svgr",
         "tailwindcss",
         "viem",

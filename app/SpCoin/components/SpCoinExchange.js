@@ -1,6 +1,6 @@
 'use client'
-import styles from './styles/App.module.css'
-import spCoin_png from './components/images/spCoin.png'
+import styles from '../styles/App.module.css'
+import spCoin_png from './images/spCoin.png'
 
 import React, { useState, useEffect } from "react";
 import { Input, Popover, Radio, Modal, message } from "antd";
@@ -9,8 +9,8 @@ import {
   DownOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import tokenEthList from "../components/data/tokenEthList.json";
-import tokenPolyList from "../components/data/tokenPolyList.json";
+import tokenEthList from "./data/tokenEthList.json";
+import tokenPolyList from "./data/tokenPolyList.json";
 
 // ToDo Fix this
 import Image from 'next/image'

@@ -143,7 +143,7 @@ export default function PriceView({
               value={sellToken}
               name="sell-token-select"
               id="sell-token-select"
-              className="mr-2 w-50 sm:w-full h-9 rounded-md"
+              className="mr-2 w-50 sm:w-full h-19 rounded-md"
               onChange={handleSellTokenChange}
             >
               {/* <option value="">--Choose a token--</option> */}

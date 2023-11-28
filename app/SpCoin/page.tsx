@@ -1,9 +1,9 @@
 import React from 'react'
-import Exchange from './Exchange'
+import SpCoinExchange from './components/SpCoinExchange'
 
 function swap() {
   return (
-    <Exchange />
+    <SpCoinExchange />
     // <div className="mainApp"><h1>Swap Page</h1></div>
   )
 }

@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Title from "./components/panes/title"
+import "@/styles/globals.css";
+import ConnectedPage from "./components/ConnectWrapper";
+import Component from './index';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,9 +18,11 @@ export default function RootLayout({
         children: React.ReactNode
     }) {
     return (
-        <div>
-            <Title address={undefined} isConnected={undefined} connect={undefined} headerType={''} />
+        <>
+            {/* <Title address={undefined} isConnected={undefined} connect={undefined} headerType={''} /> */}
+            {/* <ConnectedPage Component={Component} /> */}
+            {/* <ConnectedPage Component={children} /> */}
             {children}
-        </div>
+        </>
     )
 }

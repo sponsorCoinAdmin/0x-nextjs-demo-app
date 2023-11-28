@@ -5,6 +5,7 @@ import _0X_png from '../images/0X.png'
 import eth_png from '../images/eth.png'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ConnectKitButton } from "connectkit";
 
 function MoralisHeader(address: string, isConnected: any, connect: React.MouseEventHandler<HTMLDivElement> | undefined) {
   return (
@@ -26,6 +27,8 @@ function MoralisHeader(address: string, isConnected: any, connect: React.MouseEv
         <div className={styles.connectButton} onClick={connect}>
           {isConnected ? (address.slice(0,4) +"..." +address.slice(38)) : "Connect"}
         </div>
+        {<ConnectKitButton />}
+
       </div>
     </>
   );

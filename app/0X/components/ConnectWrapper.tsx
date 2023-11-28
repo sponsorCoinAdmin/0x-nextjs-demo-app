@@ -39,7 +39,7 @@ const config = createConfig(
     >
       <WagmiConfig config={config}>
         <ConnectKitProvider>
-          <ConnectKitButton />
+          {/* <ConnectKitButton /> */}
           {mounted && <Component {...pageProps}/>}
         </ConnectKitProvider>
       </WagmiConfig>

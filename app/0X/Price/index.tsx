@@ -1,3 +1,5 @@
+import SpCoinExchange from '../components/SpCoinExchange'
+
 import qs from "qs";
 import useSWR from "swr";
 import { ConnectKitButton } from "connectkit";
@@ -124,12 +126,9 @@ export default function PriceView({
 
   return (
     <form>
-      <h1 className="text-3xl font-bold mb-4">Sponsor Coin Swap API Demo</h1>
-      <p className="text-md mb-2">
-        Check out the <a href="https://0x.org/docs/">0x Docs</a> and{" "}
-        <a href="https://0x.org/docs/">Code</a> to build your own
-      </p>
-      <p className="text-md font-bold mb-2">Polygon Network</p>
+
+      <SpCoinExchange />
+      <h1>--------------------------------------------------------------------</h1>
 
       <div className="bg-slate-200 dark:bg-slate-800 p-4 rounded-md mb-3">
         <section className="mt-4 flex items-start justify-center">
@@ -144,7 +143,7 @@ export default function PriceView({
               value={sellToken}
               name="sell-token-select"
               id="sell-token-select"
-              className="mr-2 w-50 sm:w-full h-9 rounded-md"
+              className="mr-2 w-50 sm:w-full h-19 rounded-md  text-black"
               onChange={handleSellTokenChange}
             >
               {/* <option value="">--Choose a token--</option> */}
@@ -164,7 +163,8 @@ export default function PriceView({
           <input
             id="sell-amount"
             value={sellAmount}
-            className="h-9 rounded-md"
+            className="h-9 rounded-md
+            text-black"
             style={{ border: "1px solid black" }}
             onChange={(e) => {
               setTradeDirection("sell");
@@ -183,7 +183,7 @@ export default function PriceView({
             name="buy-token-select"
             id="buy-token-select"
             value={buyToken}
-            className="mr-2 w-50 sm:w-full h-9 rounded-md"
+            className="mr-2 w-50 sm:w-full h-9 rounded-md  text-black"
             onChange={(e) => handleBuyTokenChange(e)}
           >
             {/* <option value="">--Choose a token--</option> */}
@@ -199,7 +199,7 @@ export default function PriceView({
           <input
             id="buy-amount"
             value={buyAmount}
-            className="h-9 rounded-md bg-white cursor-not-allowed"
+            className="h-9 rounded-md bg-white cursor-not-allowed text-black"
             style={{ border: "1px solid black" }}
             disabled
             onChange={(e) => {
@@ -223,6 +223,7 @@ export default function PriceView({
             : null}
         </div>
       </div>
+
 
       {takerAddress ? (
         <ApproveOrReviewButton

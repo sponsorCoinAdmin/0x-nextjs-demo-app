@@ -1,9 +1,6 @@
 'use client'
 
 import "@/styles/globals.css";
-import ConnectedPage from "./components/ConnectWrapper";
-import Component from './index';
-import type { AppProps } from "next/app";
 import { WagmiConfig, createConfig } from "wagmi";
 import {
   ConnectKitProvider,
@@ -20,7 +17,6 @@ const config = createConfig(
 
     alchemyId: "EuL5KyMLLBrMyNbZW9CgtiSy45_bh24c",
     walletConnectProjectId: "2c23de9d13468896a8a189e8f56ba34e",
-
     // Required
     appName: "SponsorCoin Dev Demo App",
 
@@ -29,26 +25,28 @@ const config = createConfig(
   })
 );
 
-// // export default function App({ Component, pageProps }: AppProps) {
-//   export default function App() {
-//     const [mounted, setMounted] = useState(false);
-//   useEffect(() => setMounted(true), []);
+// export default function App({ Component, pageProps }: AppProps) {
+  export default function App(props: {
+      [x: string]: any; Component: any; 
+}) {
+    let { Component, pageProps } = props;
 
-//   return (
-//     <div
-//     </div>
-//   );
-// }
+    // alert(Component);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-
-import React from 'react'
-
-function connectedPage() {
   return (
-    <>
-      <ConnectedPage Component={Component} />
-    </>
-  )
+    <div
+      style={{
+        padding: "20px",
+      }}
+    >
+      <WagmiConfig config={config}>
+        <ConnectKitProvider>
+          <ConnectKitButton />
+          {mounted && <Component {...pageProps}/>}
+        </ConnectKitProvider>
+      </WagmiConfig>
+    </div>
+  );
 }
-
-export default connectedPage

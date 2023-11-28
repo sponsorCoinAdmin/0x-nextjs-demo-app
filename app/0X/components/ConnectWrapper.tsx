@@ -12,14 +12,10 @@ import { useEffect, useState } from "react";
 const config = createConfig(
   getDefaultConfig({
     // Required API Keys
-    // alchemyId: "MzUaa0A87yexjd8UKcHm8HIr1f4aghxT",
-    // walletConnectProjectId: "a8024e8262cb4e7102941a3577b5a5c0",
-
-    alchemyId: "EuL5KyMLLBrMyNbZW9CgtiSy45_bh24c",
+     alchemyId: "EuL5KyMLLBrMyNbZW9CgtiSy45_bh24c",
     walletConnectProjectId: "2c23de9d13468896a8a189e8f56ba34e",
     // Required
     appName: "SponsorCoin Dev Demo App",
-
     // Optional
     appDescription: "A Next.js demo app for 0x Swap API and ConnectKit",
   })

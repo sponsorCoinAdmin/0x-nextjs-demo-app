@@ -1,11 +1,11 @@
 import React from 'react'
+import Swap from './Swap'
 
-function page() {
+function swap() {
   return (
-    <div>
-      <h1>Moralis Page3</h1>
-    </div>
+    <Swap />
+    // <div className="mainApp"><h1>Swap Page</h1></div>
   )
 }
 
-export default page
+export default swap

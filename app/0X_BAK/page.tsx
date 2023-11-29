@@ -1,7 +1,7 @@
 'use client'
 
 import "@/styles/globals.css";
-import ConnectedPage from "./components/ConnectWrapper";
+import ConnectedPage from "../components/ConnectWrapper";
 import Component from './index';
 import type { AppProps } from "next/app";
 import { WagmiConfig, createConfig } from "wagmi";

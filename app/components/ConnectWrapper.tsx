@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 const config = createConfig(
   getDefaultConfig({
     // Required API Keys
-     alchemyId: "EuL5KyMLLBrMyNbZW9CgtiSy45_bh24c",
+    alchemyId: "EuL5KyMLLBrMyNbZW9CgtiSy45_bh24c",
     walletConnectProjectId: "2c23de9d13468896a8a189e8f56ba34e",
     // Required
     appName: "SponsorCoin Dev Demo App",
@@ -27,22 +27,18 @@ const config = createConfig(
 }) {
     let { Component, pageProps } = props;
 
-    // alert(Component);
+  // alert(Component);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   return (
-    <div
-      style={{
-        padding: "20px",
-      }}
-    >
+    <>
       <WagmiConfig config={config}>
         <ConnectKitProvider>
           {/* <ConnectKitButton /> */}
           {mounted && <Component {...pageProps}/>}
         </ConnectKitProvider>
       </WagmiConfig>
-    </div>
+    </>
   );
 }

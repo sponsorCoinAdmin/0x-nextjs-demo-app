@@ -3,7 +3,7 @@
 import React from "react";
 import { ConnectKitButton } from "connectkit";
 
-import connectTheme from "../../0X/styles/connectTheme.json"
+import connectTheme from "../../styles/connectTheme.json"
 import ConnectWrapper from "../ConnectWrapper";
 
 
@@ -24,5 +24,3 @@ function ConnectButton() {
   );
 }
 export default ConnectButton;
-
-

@@ -18,7 +18,7 @@ function Header() {
         <div className={styles.headerItem}><Link href="/Tokens">Tokens</Link></div>
         <div className={styles.headerItem}><Link href="/SpCoin">SpCoin</Link></div>
         <div className={styles.headerItem}><Link href="/Moralis">Moralis</Link></div>
-        <div className={styles.headerItem}><Link href="/0X">0X</Link></div>
+        {/* <div className={styles.headerItem}><Link href="/0X">0X</Link></div> */}
       </div>
       <div className={styles.rightH}>
         <div className={styles.headerItem}>

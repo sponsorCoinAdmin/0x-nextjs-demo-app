@@ -1,4 +1,31 @@
 import SpCoinExchange from '../components/SpCoinExchange'
+import styles from '../styles/App.module.css'
+import spCoin_png from '../components/images/spCoin.png'
+import Image from 'next/image'
+import { Input, Popover, Radio, Modal, message } from "antd";
+import {
+  ArrowDownOutlined,
+  DownOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+
+
+
+
+
+
+
+//-------------- Finish Moralis Requirements ----------------------------------
+
+import ApproveOrReviewButton from '../components/Buttons/ApproveOrReviewButton';
+import CustomConnectButton from '../components/Buttons/CustomConnectButton';
+import ConnectApproveOrReviewButton from '../components/Buttons/ConnectApproveOrReviewButton';
+
+
+
+
+
+
 
 import qs from "qs";
 import useSWR from "swr";
@@ -21,7 +48,6 @@ import {
   MAX_ALLOWANCE,
   exchangeProxy,
 } from "../lib/constants";
-// } from "../../lib/constants";
 
 interface PriceRequestParams {
   sellToken: string;
@@ -124,13 +150,78 @@ export default function PriceView({
 
   console.log(data, isError, isLoading);
 
+
+
+
+
+
+
+  // ------------------------------ START NEW MORALIS SCRIPT CODE
+
+  let [slippage, setSlippage] = useState(2.5);
+  function handleSlippageChange(e) {
+    setSlippage(e.target.value);
+  }
+
+  const settings = (
+    <div>
+      <div >Slippage Tolerance</div>
+      <div >
+        <Radio.Group value={slippage} onChange={handleSlippageChange}>
+          <Radio.Button value={0.5}>0.5%</Radio.Button>
+          <Radio.Button value={2.5}>2.5%</Radio.Button>
+          <Radio.Button value={5}>5.0%</Radio.Button>
+        </Radio.Group>
+      </div>
+    </div>
+  );
+
+    // ------------------------------ END NEW MORALIS SCRIPT CODE
+
+
   return (
     <form>
 
       <SpCoinExchange />
-      <h1>--------------------------------------------------------------------</h1>
+      <h1>-----------------------------------------------------------------</h1>
+      {/* className={styles.tradeBox} */}
+      {/* <div className="bg-blue-800 dark:bg-slate-800 p-4 rounded-xl mb-3"> */}
+      <div className={styles.tradeBox}>
+        <div className={styles.tradeBoxHeader}>
+          <Image src={spCoin_png} width={25} height={25} alt="Moralis Logo" />
+          <h4 className={styles.center}>Sponsor Coin Exchange</h4>
+          <Popover
+            content={settings}
+            title="Settings"
+            trigger="click"
+            placement="bottomLeft"
+          >
+          <SettingOutlined className={styles.cog} />
+          </Popover>
+        </div>
+        {/* 
+          <Input className={styles.antInput} placeholder="0" value={tokenOneAmount} onChange={changeAmount} disabled={!prices} />
+          <Input className={styles.antInput} placeholder="0" value={tokenTwoAmount} disabled={true} />
+          <div className={styles.swapButton} disabled={!tokenOneAmount || !isConnected} onClick={fetchDexSwap}>Swap</div>
+        */}
+        <Input id="sell-amount" className={styles.antInput} placeholder="0" disabled={false} 
+          onChange={(e) => {
+              setTradeDirection("sell");
+              setSellAmount(e.target.value);
+          }}/>
+        <Input id="buy-amount" className={styles.antInput} placeholder="0" disabled={true} value={buyAmount} />
+        {takerAddress ? (
+          <ApproveOrReviewButton
+            sellTokenAddress={POLYGON_TOKENS_BY_SYMBOL[sellToken].address}
+            takerAddress={takerAddress}
+            onClick={() => {
+              setFinalize(true);
+            }}
+            disabled={disabled}
+          />
+          ) : (
+        <CustomConnectButton />)}
 
-      <div className="bg-slate-200 dark:bg-slate-800 p-4 rounded-md mb-3">
         <section className="mt-4 flex items-start justify-center">
           <label htmlFor="sell-select" className="sr-only"></label>
           <img
@@ -224,115 +315,9 @@ export default function PriceView({
         </div>
       </div>
 
-
-      {takerAddress ? (
-        <ApproveOrReviewButton
-          sellTokenAddress={POLYGON_TOKENS_BY_SYMBOL[sellToken].address}
-          takerAddress={takerAddress}
-          onClick={() => {
-            setFinalize(true);
-          }}
-          disabled={disabled}
-        />
-      ) : (
-        <ConnectKitButton.Custom>
-          {({
-            isConnected,
-            isConnecting,
-            show,
-            hide,
-            address,
-            ensName,
-            chain,
-          }) => {
-            return (
-              <button
-                onClick={show}
-                type="button"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
-              >
-                {isConnected ? address : "Connect Wallet"}
-              </button>
-            );
-          }}
-        </ConnectKitButton.Custom>
-      )}
-
       {isLoadingPrice && (
         <div className="text-center mt-2">Fetching the best price...</div>
       )}
     </form>
-  );
-}
-
-function ApproveOrReviewButton({
-  takerAddress,
-  onClick,
-  sellTokenAddress,
-  disabled,
-}: {
-  takerAddress: Address;
-  onClick: () => void;
-  sellTokenAddress: Address;
-  disabled?: boolean;
-}) {
-  // 1. Read from erc20, does spender (0x Exchange Proxy) have allowance?
-  const { data: allowance, refetch } = useContractRead({
-    address: sellTokenAddress,
-    abi: erc20ABI,
-    functionName: "allowance",
-    args: [takerAddress, exchangeProxy],
-  });
-
-  // 2. (only if no allowance): write to erc20, approve 0x Exchange Proxy to spend max integer
-  const { config } = usePrepareContractWrite({
-    address: sellTokenAddress,
-    abi: erc20ABI,
-    functionName: "approve",
-    args: [exchangeProxy, MAX_ALLOWANCE],
-  });
-
-  const {
-    data: writeContractResult,
-    writeAsync: approveAsync,
-    error,
-  } = useContractWrite(config);
-
-  const { isLoading: isApproving } = useWaitForTransaction({
-    hash: writeContractResult ? writeContractResult.hash : undefined,
-    onSuccess(data) {
-      refetch();
-    },
-  });
-
-  if (error) {
-    return <div>Something went wrong: {error.message}</div>;
-  }
-
-  if (allowance === 0n && approveAsync) {
-    return (
-      <>
-        <button
-          type="button"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
-          onClick={async () => {
-            const writtenValue = await approveAsync();
-          }}
-        >
-          {isApproving ? "Approving…" : "Approve"}
-        </button>
-      </>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={onClick}
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full disabled:opacity-25"
-    >
-      {disabled ? "Insufficient Balance" : "Review Trade"}
-    </button>
   );
 }

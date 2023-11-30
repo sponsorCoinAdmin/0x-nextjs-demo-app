@@ -1,4 +1,3 @@
-'use client'
 import styles from '../styles/App.module.css'
 import spCoin_png from './images/spCoin.png'
 
@@ -259,6 +258,7 @@ function Swap(props) {
         <div className={styles.inputs}>
           <Input className={styles.antInput} placeholder="0" value={tokenOneAmount} onChange={changeAmount} disabled={!prices} />
           <Input className={styles.antInput} placeholder="0" value={tokenTwoAmount} disabled={true} />
+          <div className={styles.swapButton} disabled={!tokenOneAmount || !isConnected} onClick={fetchDexSwap}>Swap</div>
           <div className={styles.switchButton} onClick={switchTokens}>
             <ArrowDownOutlined className={styles.switchArrow} />
           </div>
@@ -273,7 +273,6 @@ function Swap(props) {
             <DownOutlined />
           </div>
         </div>
-        <div className={styles.swapButton} disabled={!tokenOneAmount || !isConnected} onClick={fetchDexSwap}>Swap</div>
       </div>
     </>
   );

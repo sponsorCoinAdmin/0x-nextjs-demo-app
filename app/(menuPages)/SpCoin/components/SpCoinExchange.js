@@ -64,7 +64,7 @@ function Swap(props) {
   }
 
 */
-  function handleSlippageChange(e) {
+    function handleSlippageChange(e) {
     setSlippage(e.target.value);
   }
 

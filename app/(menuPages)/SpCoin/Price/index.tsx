@@ -12,9 +12,6 @@ import {
 
 
 
-
-
-
 //-------------- Finish Moralis Requirements ----------------------------------
 
 import ApproveOrReviewButton from '../components/Buttons/ApproveOrReviewButton';
@@ -30,7 +27,7 @@ import ConnectApproveOrReviewButton from '../components/Buttons/ConnectApproveOr
 import qs from "qs";
 import useSWR from "swr";
 import { ConnectKitButton } from "connectkit";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, SetStateAction } from "react";
 import { formatUnits, parseUnits } from "ethers";
 import {
   erc20ABI,
@@ -158,8 +155,8 @@ export default function PriceView({
 
   // ------------------------------ START NEW MORALIS SCRIPT CODE
 
-  let [slippage, setSlippage] = useState(2.5);
-  function handleSlippageChange(e) {
+    let [slippage, setSlippage] = useState(2.5);
+  function handleSlippageChange(e: { target: { value: SetStateAction<number>; }; }) {
     setSlippage(e.target.value);
   }
 
@@ -176,19 +173,29 @@ export default function PriceView({
     </div>
   );
 
-    // ------------------------------ END NEW MORALIS SCRIPT CODE
+let [changeToken, setChangeToken] = useState(1);
+let [isOpen, setIsOpen] = useState(false);
+
+function openModal(asset: SetStateAction<number>) {
+  setChangeToken(asset);
+  setIsOpen(true);
+}
+
+
+
+  // ------------------------------ END NEW MORALIS SCRIPT CODE
 
 
   return (
     <form>
 
-      <SpCoinExchange />
-      <h1>-----------------------------------------------------------------</h1>
+      {/* <SpCoinExchange /> */}
+      {/* <h1>-----------------------------------------------------------------</h1> */}
       {/* className={styles.tradeBox} */}
       {/* <div className="bg-blue-800 dark:bg-slate-800 p-4 rounded-xl mb-3"> */}
       <div className={styles.tradeBox}>
         <div className={styles.tradeBoxHeader}>
-          <Image src={spCoin_png} width={25} height={25} alt="Moralis Logo" />
+          <Image src={spCoin_png} width={30} height={30} alt="Moralis Logo" />
           <h4 className={styles.center}>Sponsor Coin Exchange</h4>
           <Popover
             content={settings}
@@ -204,23 +211,66 @@ export default function PriceView({
           <Input className={styles.antInput} placeholder="0" value={tokenTwoAmount} disabled={true} />
           <div className={styles.swapButton} disabled={!tokenOneAmount || !isConnected} onClick={fetchDexSwap}>Swap</div>
         */}
-        <Input id="sell-amount" className={styles.antInput} placeholder="0" disabled={false} 
-          onChange={(e) => {
-              setTradeDirection("sell");
-              setSellAmount(e.target.value);
-          }}/>
-        <Input id="buy-amount" className={styles.antInput} placeholder="0" disabled={true} value={buyAmount} />
-        {takerAddress ? (
-          <ApproveOrReviewButton
-            sellTokenAddress={POLYGON_TOKENS_BY_SYMBOL[sellToken].address}
-            takerAddress={takerAddress}
-            onClick={() => {
-              setFinalize(true);
-            }}
-            disabled={disabled}
-          />
-          ) : (
-        <CustomConnectButton />)}
+        <div className={styles.inputs}>
+          <Input id="sell-amount" className={styles.antInput} placeholder="0" disabled={false} 
+            onChange={(e) => {
+                setTradeDirection("sell");
+                setSellAmount(e.target.value);
+            }}/>
+          <Input id="buy-amount" className={styles.antInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
+          {takerAddress ? (
+            <ApproveOrReviewButton
+              sellTokenAddress={POLYGON_TOKENS_BY_SYMBOL[sellToken].address}
+              takerAddress={takerAddress}
+              onClick={() => {
+                setFinalize(true);
+              }}
+              disabled={disabled}
+            />
+            ) : (
+          <CustomConnectButton />)}
+         
+          <div className={styles.switchButton} >
+              <ArrowDownOutlined className={styles.switchArrow} />
+          </div>
+ 
+          <div className={styles.assetOne} onClick={() => openModal(1)}>
+            <img
+              alt={sellToken}
+              className="h-9 w-9 mr-2 rounded-md"
+              src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
+            />
+            {sellToken.toUpperCase()}
+            {/* {tokenOne.ticker} */}
+            <DownOutlined />
+          </div>
+
+          <div className={styles.assetTwo} onClick={() => openModal(1)}>
+            <img
+              alt={buyToken}
+              className="h-9 w-9 mr-2 rounded-md"
+              src={POLYGON_TOKENS_BY_SYMBOL[buyToken].logoURI}
+            />
+            {buyToken.toUpperCase()}
+            {/* {tokenOne.ticker} */}
+            <DownOutlined />
+          </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <section className="mt-4 flex items-start justify-center">
           <label htmlFor="sell-select" className="sr-only"></label>
@@ -237,7 +287,7 @@ export default function PriceView({
               className="mr-2 w-50 sm:w-full h-19 rounded-md  text-black"
               onChange={handleSellTokenChange}
             >
-              {/* <option value="">--Choose a token--</option> */}
+              <option value="">--Choose a token--</option>
               {POLYGON_TOKENS.map((token) => {
                 return (
                   <option
@@ -277,7 +327,7 @@ export default function PriceView({
             className="mr-2 w-50 sm:w-full h-9 rounded-md  text-black"
             onChange={(e) => handleBuyTokenChange(e)}
           >
-            {/* <option value="">--Choose a token--</option> */}
+            <option value="">--Choose a token--</option>
             {POLYGON_TOKENS.map((token) => {
               return (
                 <option key={token.address} value={token.symbol.toLowerCase()}>

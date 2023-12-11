@@ -1,5 +1,5 @@
 'use client'
-import styles from './styles/App.module.css'
+import styles from './styles/Moralis.module.css'
 import moralis_png from './components/images/moralis.png'
 
 import React, { useState, useEffect } from "react";

@@ -1,5 +1,5 @@
 'use client'
-import styles from '../styles/App.module.css'
+import styles from '../styles/0X.module.css'
 import spCoin_png from './images/spCoin.png'
 
 import React, { useState, useEffect } from "react";

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/App.module.css";
+import styles from "../../styles/Moralis.module.css";
 import moralis_png from '../images/moralis.png'
 import eth_png from '../../images/eth.png'
 import Image from 'next/image'

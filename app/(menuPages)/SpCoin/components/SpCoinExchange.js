@@ -1,4 +1,4 @@
-import styles from '../styles/App.module.css'
+import styles from '../styles/SpCoin.module.css'
 import spCoin_png from './images/spCoin.png'
 
 import React, { useState, useEffect } from "react";
@@ -251,6 +251,7 @@ function Swap(props) {
             title="Settings"
             trigger="click"
             placement="bottomLeft"
+            className={styles.cog}
           >
           <SettingOutlined className={styles.cog} />
           </Popover>

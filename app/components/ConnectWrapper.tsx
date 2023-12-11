@@ -1,6 +1,5 @@
 'use client'
 
-import "@/styles/globals.css";
 import { WagmiConfig, createConfig } from "wagmi";
 import {
   ConnectKitProvider,

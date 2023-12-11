@@ -1,7 +1,5 @@
 'use client'
 
-import "@/styles/globals.css";
-
 import ConnectedPage from "../../components/ConnectWrapper";
 import Component from './index';
 

@@ -1,6 +1,12 @@
 import SpCoinExchange from '../components/SpCoinExchange'
 import styles from '../styles/SpCoin.module.css'
+import '../styles/SpCoin.module.css'
 import spCoin_png from '../components/images/spCoin.png'
+// import dataList from '../Resources/data/tokenEthList.json';
+import dataList from '../../../components/Dialogs/Resources/data/tokenEthList.json';
+import Dialog from '../../../components/Dialogs/Dialog';
+
+
 import Image from 'next/image'
 import { Input, Popover, Radio, Modal, message } from "antd";
 import {
@@ -17,6 +23,8 @@ import {
 import ApproveOrReviewButton from '../components/Buttons/ApproveOrReviewButton';
 import CustomConnectButton from '../components/Buttons/CustomConnectButton';
 import ConnectApproveOrReviewButton from '../components/Buttons/ConnectApproveOrReviewButton';
+
+
 
 
 
@@ -53,6 +61,10 @@ interface PriceRequestParams {
   sellAmount?: string;
   takerAddress?: string;
 }
+
+const dialogName ='Select an agent';
+const selectPlacement ='Search agent name or paste address';
+
 
 const AFFILIATE_FEE = 0.01; // Percentage of the buyAmount that should be attributed to feeRecipient as affiliate fees
 const FEE_RECIPIENT = "0x75A94931B81d81C7a62b76DC0FcFAC77FbE1e917"; // The ETH address that should receive affiliate fees
@@ -177,17 +189,36 @@ let [changeToken, setChangeToken] = useState(1);
 let [isOpen, setIsOpen] = useState(false);
 
 function openModal(asset: SetStateAction<number>) {
+  const dialog = document.querySelector("#dialogList")
+  dialog?.showModal()
+
   setChangeToken(asset);
   setIsOpen(true);
 }
 
-
-
   // ------------------------------ END NEW MORALIS SCRIPT CODE
+  type ListElement = {
+    ticker: string;
+    img: string;
+    name: string;
+    address: string;
+    decimals: number;
+  }
 
+const selectedListElement = async(listElement: ListElement) => {
+  console.log("Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+  alert("Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+}
+
+  async function onClose() {
+    console.log("Modal has closed")
+    // alert("Modal has closed")
+}
 
   return (
     <form>
+
+       <Dialog titleName={dialogName} selectPlacement={selectPlacement} dataList={dataList} onClose={onClose} selectedListElement={selectedListElement}/>
 
       {/* <SpCoinExchange /> */}
       {/* <h1>-----------------------------------------------------------------</h1> */}
@@ -234,14 +265,14 @@ function openModal(asset: SetStateAction<number>) {
               <ArrowDownOutlined className={styles.switchArrow} />
           </div>
  
-          <div className={styles.assetOne} onClick={() => openModal(1)}>
+            {/* {tokenOne.ticker} */}
+            <div className={styles.assetOne} onClick={() => openModal(1)}>
             <img
               alt={sellToken}
               className="h-9 w-9 mr-2 rounded-md"
               src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
             />
             {sellToken.toUpperCase()}
-            {/* {tokenOne.ticker} */}
             <DownOutlined />
           </div>
 
@@ -255,7 +286,6 @@ function openModal(asset: SetStateAction<number>) {
             {/* {tokenOne.ticker} */}
             <DownOutlined />
           </div>
-
         </div>
 
 

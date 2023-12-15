@@ -205,15 +205,14 @@ function openModal(asset: SetStateAction<number>) {
     decimals: number;
   }
 
-const selectedListElement = async(listElement: ListElement) => {
-  console.log("Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
-  alert("Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
-}
+  const selectedListElement = async(listElement: ListElement) => {
+    console.log("QQQ Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+    alert("QQQ Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+  }
 
   async function onClose() {
-    console.log("Modal has closed")
-    // alert("Modal has closed")
-}
+      console.log("Modal has closed")
+  }
 
   return (
     <form>

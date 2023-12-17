@@ -1,3 +1,4 @@
+import SpCoinExchange from '../components/SpCoinExchange'
 import styles from '../styles/SpCoin.module.css'
 import '../styles/SpCoin.module.css'
 import spCoin_png from '../components/images/spCoin.png'
@@ -90,6 +91,38 @@ export default function PriceView({
   const [tradeDirection, setTradeDirection] = useState("sell");
   const [sellToken, setSellToken] = useState("wmatic");
   const [buyToken, setBuyToken] = useState("dai");
+
+  // **START** NEW Dialog Design STUFF
+
+  type ListElement = {
+    chainId: number;
+    ticker: string;
+    img: string;
+    name: string;
+    address: string;
+    decimals: number;
+  }
+
+  /*
+  const defaultBuyElement = {  chainId: 1,
+    ticker: string
+    img: string
+    name: string
+    address: string
+    decimals: number};
+*/
+
+  const [buyElement, setBuyElement] = useState(undefined);
+  const [sellElement, setSellElement] = useState(undefined);
+
+  const getDlgLstElement = async(listElement: ListElement) => {
+    console.log("Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+    setSellToken("usdt");
+
+    alert("IndexBAK.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+  }
+
+  // **STOP** NEW Dialog Design STUFF
 
   const handleSellTokenChange = (e: ChangeEvent<HTMLSelectElement>) => {
     alert("handleSellTokenChange = " + e.target.value)
@@ -195,22 +228,6 @@ function openModal(asset: SetStateAction<number>) {
 }
 
   // ------------------------------ END NEW MORALIS SCRIPT CODE
-  type ListElement = {
-    chainId: number;
-    ticker: string;
-    img: string;
-    name: string;
-    address: string;
-    decimals: number;
-  }
-
-  const getDlgLstElement = async(listElement: ListElement) => {
-    console.log("page.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
-    setSellToken("usdt");
-
-    alert("index.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
-  }
-
   async function onClose() {
       console.log("Modal has closed")
   }

@@ -5,6 +5,7 @@ import dataList from '../Resources/data/tokenEthList.json';
 import Dialog from '../Dialog';
 
 type ListElement = {
+  chainId: number;
   ticker: string;
   img: string;
   name: string;
@@ -13,7 +14,7 @@ type ListElement = {
 }
 
 type Props = {
-  selectedListElement: (listElement: ListElement) => void,
+  getDlgLstElement: (listElement: ListElement) => void,
   onClose:  () => void,
 }
 
@@ -21,11 +22,11 @@ const dialogName ='Select a token';
 const selectPlacement ='Search token name or paste address'; 
 
 // Parent component
-function DlgLstBtn({ selectedListElement, onClose }: Props) {
+function DlgLstBtn({ getDlgLstElement, onClose }: Props) {
 
   return (
     <>
-      <Dialog titleName={dialogName} selectPlacement={selectPlacement} dataList={dataList} onClose={onClose} selectedListElement={selectedListElement}/>
+      <Dialog titleName={dialogName} selectPlacement={selectPlacement} dataList={dataList} onClose={onClose} getDlgLstElement={getDlgLstElement}/>
 
       <div className="ModalButton">
         <button

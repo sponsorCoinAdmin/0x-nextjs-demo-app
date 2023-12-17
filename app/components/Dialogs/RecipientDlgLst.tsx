@@ -5,6 +5,7 @@ import DataList from './DataList'
 import InputSelect from './InputSelect'
 
 type ListElement = {
+    chainId: number;
     ticker: string; 
     img: string; 
     name: string; 
@@ -17,10 +18,10 @@ type Props = {
     selectPlacement: any,
     dataList: ListElement[],
     onClose:  () => void,
-    selectedListElement: (listElement: ListElement) => void,
+    getDlgLstElement: (listElement: ListElement) => void,
 }
 
-export default function Dialog({ titleName, selectPlacement, dataList, onClose, selectedListElement}: Props) {
+export default function Dialog({ titleName, selectPlacement, dataList, onClose, getDlgLstElement}: Props) {
 
     const searchParams = useSearchParams()
     const dialogRef = useRef<null | HTMLDialogElement>(null)
@@ -28,7 +29,7 @@ export default function Dialog({ titleName, selectPlacement, dataList, onClose, 
 
     const getSelectedListElement = (listElement: ListElement) => {
         // alert("Modifying Recipient Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement, null, 2));
-        selectedListElement(listElement);
+        getDlgLstElement(listElement);
         closeDialog()
       }
 

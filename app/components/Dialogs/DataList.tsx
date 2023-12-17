@@ -4,6 +4,7 @@ import info_png from './Resources/images/info1.png'
 import Image from 'next/image'
 
 type ListElement = {
+    chainId: number;
     ticker: string; 
     img: string; 
     name: string; 

@@ -61,7 +61,7 @@ interface PriceRequestParams {
 }
 
 const dialogName ='Select an agent';
-const selectPlacement ='Search agent name or paste address';
+const selectElement ='Search agent name or paste address';
 
 const AFFILIATE_FEE = 0.01; // Percentage of the buyAmount that should be attributed to feeRecipient as affiliate fees
 const FEE_RECIPIENT = "0x75A94931B81d81C7a62b76DC0FcFAC77FbE1e917"; // The ETH address that should receive affiliate fees
@@ -235,7 +235,7 @@ function openModal(asset: SetStateAction<number>) {
   return (
     <form>
 
-      <Dialog titleName={dialogName} selectPlacement={selectPlacement} dataList={dataList} onClose={onClose} getDlgLstElement={getDlgLstElement}/>
+      <Dialog titleName={dialogName} selectElement={selectElement} dataList={dataList} onClose={onClose} getDlgLstElement={getDlgLstElement}/>
 
       {/* <SpCoinExchange /> */}
       {/* <h1>-----------------------------------------------------------------</h1> */}

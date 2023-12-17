@@ -15,13 +15,13 @@ type ListElement = {
 
 type Props = {
     titleName: string,
-    selectPlacement: any,
+    selectElement: any,
     dataList: ListElement[],
     onClose:  () => void,
     getDlgLstElement: (listElement: ListElement) => void,
 }
 
-export default function Dialog({ titleName, selectPlacement, dataList, onClose, getDlgLstElement}: Props) {
+export default function Dialog({ titleName, selectElement, dataList, onClose, getDlgLstElement}: Props) {
     const searchParams = useSearchParams()
     const dialogRef = useRef<null | HTMLDialogElement>(null)
     const showDialog = searchParams.get('showDialog')
@@ -58,10 +58,10 @@ export default function Dialog({ titleName, selectPlacement, dataList, onClose, 
 
                 <div className="modalBox">
                     <div className="modalInputSelect">
-                        <InputSelect selectPlacement={selectPlacement}/>
+                        <InputSelect selectElement={selectElement}/>
                     </div>
                     <div className="modalScrollBar">
-                        <DataList dataList={dataList} selectPlacement={selectPlacement} getSelectedListElement={getSelectedListElement}/>
+                        <DataList dataList={dataList} selectElement={selectElement} getSelectedListElement={getSelectedListElement}/>
                     </div>
                 </div>
             </div>

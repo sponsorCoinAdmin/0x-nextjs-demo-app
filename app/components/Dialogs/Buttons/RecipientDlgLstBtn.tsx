@@ -18,14 +18,14 @@ type Props = {
 }
 
 const dialogName ='Sponsor a recipient';
-const selectPlacement ='Search recipient Name or paste Address';
+const selectElement ='Search recipient Name or paste Address';
   
 // Parent component
 function DlgLstBtn({ getDlgLstElement, onClose }: Props) {
 
   return (
     <>
-      <Dialog titleName={dialogName} selectPlacement={selectPlacement} dataList={dataList} onClose={onClose} getDlgLstElement={getDlgLstElement} />
+      <Dialog titleName={dialogName} selectElement={selectElement} dataList={dataList} onClose={onClose} getDlgLstElement={getDlgLstElement} />
 
       <div className="ModalButton">
         <button

@@ -7,7 +7,6 @@ import spCoin_png from '../components/images/spCoin.png'
 import dataList from '../../../components/Dialogs/Resources/data/tokenPolyList.json';
 import Dialog from '../../../components/Dialogs/Dialog';
 
-
 import Image from 'next/image'
 import { Input, Popover, Radio, Modal, message } from "antd";
 import {
@@ -17,13 +16,24 @@ import {
 } from "@ant-design/icons";
 
 
+
+
+type ListElement = {
+  chainId: number;
+  ticker: string;
+  img: string;
+  name: string;
+  address: string;
+  decimals: number;
+}
+
+let emptyToken: ListElement = { chainId: 0, ticker: '', img: '', name: '', address: '', decimals: 0 };
+
+
 //-------------- Finish Moralis Requirements ----------------------------------
 
 import ApproveOrReviewButton from '../components/Buttons/ApproveOrReviewButton';
 import CustomConnectButton from '../components/Buttons/CustomConnectButton';
-
-
-
 
 
 
@@ -71,6 +81,9 @@ export const fetcher = ([endpoint, params]: [string, PriceRequestParams]) => {
   if (!sellAmount && !buyAmount) return;
   const query = qs.stringify(params);
 
+  alert("fetcher([endpoint = " + endpoint + ",\nparams = " + JSON.stringify(params,null,2) + "]")
+  console.log("fetcher([endpoint = " + endpoint + ",\nparams = " + JSON.stringify(params,null,2) + "]")
+
   return fetch(`${endpoint}?${query}`).then((res) => res.json());
 };
 
@@ -91,6 +104,13 @@ export default function PriceView({
   const [tradeDirection, setTradeDirection] = useState("sell");
   const [sellToken, setSellToken] = useState("wmatic");
   const [buyToken, setBuyToken] = useState("dai");
+
+
+
+  const [sellListElement, setSellListElement] = useState<ListElement>(emptyToken);
+  const [buyListElement, setBuyListElement] = useState<ListElement>(emptyToken);
+
+
 
   const handleSellTokenChange = (e: ChangeEvent<HTMLSelectElement>) => {
     alert("handleSellTokenChange = " + e.target.value)
@@ -118,11 +138,39 @@ export default function PriceView({
       ? parseUnits(buyAmount, buyTokenDecimals).toString()
       : undefined;
 
+  // const { isLoading: isLoadingPrice } = useSWR(
+  //   [
+  //     "/api/price",
+  //     {
+  //       sellToken: POLYGON_TOKENS_BY_SYMBOL[sellToken].address,
+  //       buyToken: POLYGON_TOKENS_BY_SYMBOL[buyToken].address,
+  //       sellAmount: parsedSellAmount,
+  //       buyAmount: parsedBuyAmount,
+  //       takerAddress,
+  //       feeRecipient: FEE_RECIPIENT,
+  //       buyTokenPercentageFee: AFFILIATE_FEE,
+  //     },
+  //   ],
+  //   fetcher,
+  //   {
+  //     onSuccess: (data) => {
+  //       setPrice(data);
+  //       if (tradeDirection === "sell") {
+  //         console.log(formatUnits(data.buyAmount, buyTokenDecimals), data);
+  //         setBuyAmount(formatUnits(data.buyAmount, buyTokenDecimals));
+  //       } else {
+  //         setSellAmount(formatUnits(data.sellAmount, sellTokenDecimals));
+  //       }
+  //     },
+  //   }
+  // );
+
   const { isLoading: isLoadingPrice } = useSWR(
     [
       "/api/price",
       {
-        sellToken: POLYGON_TOKENS_BY_SYMBOL[sellToken].address,
+        // sellToken: POLYGON_TOKENS_BY_SYMBOL[sellToken].address,
+        sellToken: sellListElement.address,
         buyToken: POLYGON_TOKENS_BY_SYMBOL[buyToken].address,
         sellAmount: parsedSellAmount,
         buyAmount: parsedBuyAmount,
@@ -200,29 +248,12 @@ export default function PriceView({
     dialog?.showModal();
   }
 
-  type ListElement = {
-    chainId: number;
-    ticker: string;
-    img: string;
-    name: string;
-    address: string;
-    decimals: number;
-  }
-
-  let emptyToken: ListElement = { chainId: 0, ticker: '', img: '', name: '', address: '', decimals: 0 };
-
-  const [sellListElement, setSellListElement] = useState<ListElement>(emptyToken);
-  const [buyListElement, setBuyListElement] = useState<ListElement>(emptyToken);
-
-
-
+  
   const getDlgLstElement = (_listElement: ListElement) => {
     if (ACTION === SELL)
       setSellListElement(_listElement);
     else
       setBuyListElement(_listElement);
-
-
 
     console.log("index.tsx:: Modifying Token Object " + JSON.stringify(_listElement,null,2));
     // alert("index.tsx: Modifying Token Object FROM AgentDlgLstB?tn.tsx" + JSON.stringify(_listElement,null,2));
@@ -303,114 +334,8 @@ export default function PriceView({
           </div>
         </div>
 
-
-
 {/* OX Code */}
 
-
-
-        <section className="mt-4 flex items-start justify-center">
-          <label htmlFor="sell-select" className="sr-only"></label>
-          <img
-            alt={sellToken}
-            className="h-9 w-9 mr-2 rounded-md"
-            src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
-          />
-
-          <div className="h-14 sm:w-full sm:mr-2">
-
-            
-            {/* <select
-              value={sellToken}
-              name="sell-token-select"
-              id="sell-token-select"
-              className="mr-2 w-50 sm:w-full h-19 rounded-md  text-black"
-              onChange={handleSellTokenChange}
-            >
-              <option value="">--Choose a token--</option>
-              {POLYGON_TOKENS.map((token) => {
-                return (
-                  <option
-                    key={token.address}
-                    value={token.symbol.toLowerCase()}
-                  >
-                    {token.symbol}
-                  </option>
-                );
-              })}
-            </select>
-             */}
-
-            <select
-              value={sellToken}
-              name="sell-token-select"
-              id="sell-token-select"
-              className="mr-2 w-50 sm:w-full h-19 rounded-md  text-black"
-              onChange={handleSellTokenChange}
-            >
-              <option value="">--Choose a token--</option>
-                return (
-                  <option
-                    key={sellListElement.address}
-                    value={sellListElement.ticker.toLowerCase()}
-                  >
-                    {sellListElement.ticker}.toUpperCase()
-                  </option>
-              )
-            </select>
-          </div>
-
-
-        <label htmlFor="sell-amount" className="sr-only"></label>
-          <input
-            id="sell-amount"
-            value={sellAmount}
-            className="h-9 rounded-md
-            text-black"
-            style={{ border: "1px solid black" }}
-            onChange={(e) => {
-              setTradeDirection("sell");
-              setSellAmount(e.target.value);
-            }}
-          />
-        </section>
-        
-        <section className="flex mb-6 mt-4 items-start justify-center">
-          <label htmlFor="buy-token" className="sr-only"></label>
-          <img
-            alt={buyToken}
-            className="h-9 w-9 mr-2 rounded-md"
-            src={POLYGON_TOKENS_BY_SYMBOL[buyToken].logoURI}
-          />
-          <select
-            name="buy-token-select"
-            id="buy-token-select"
-            value={buyToken}
-            className="mr-2 w-50 sm:w-full h-9 rounded-md  text-black"
-            onChange={(e) => handleBuyTokenChange(e)}
-          >
-            <option value="">--Choose a token--</option>
-            {POLYGON_TOKENS.map((token) => {
-              return (
-                <option key={token.address} value={token.symbol.toLowerCase()}>
-                  {token.symbol}
-                </option>
-              );
-            })}
-          </select>
-          <label htmlFor="buy-amount" className="sr-only"></label>
-          <input
-            id="buy-amount"
-            value={buyAmount}
-            className="h-9 rounded-md bg-white cursor-not-allowed text-black"
-            style={{ border: "1px solid black" }}
-            disabled
-            onChange={(e) => {
-              setTradeDirection("buy");
-              setBuyAmount(e.target.value);
-            }}
-          />
-        </section>
         <div className="text-slate-400">
           {price && price.grossBuyAmount
             ? "Affiliate Fee: " +

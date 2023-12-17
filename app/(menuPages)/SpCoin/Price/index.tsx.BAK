@@ -3,8 +3,7 @@ import styles from '../styles/SpCoin.module.css'
 import '../styles/SpCoin.module.css'
 import spCoin_png from '../components/images/spCoin.png'
 // import dataList from '../Resources/data/tokenEthList.json';
-// import dataList from '../../../components/Dialogs/Resources/data/tokenEthList.json';
-import dataList from '../../../components/Dialogs/Resources/data/tokenPolyList.json';
+import dataList from '../../../components/Dialogs/Resources/data/tokenEthList.json';
 import Dialog from '../../../components/Dialogs/Dialog';
 
 
@@ -21,6 +20,7 @@ import {
 
 import ApproveOrReviewButton from '../components/Buttons/ApproveOrReviewButton';
 import CustomConnectButton from '../components/Buttons/CustomConnectButton';
+import ConnectApproveOrReviewButton from '../components/Buttons/ConnectApproveOrReviewButton';
 
 
 
@@ -184,19 +184,17 @@ export default function PriceView({
     </div>
   );
 
-  // ------------------------------ END MORALIS SCRIPT CODE ------------------------------------------------------
+  let [changeToken, setChangeToken] = useState(1);
+  let [isOpen, setIsOpen] = useState(false);
+  // ------------------------------ END MORALIS SCRIPT CODE
 
-  // --------------------------- START NEW MODAL/DIALOG CODE -----------------------------------------------------
-  
-  const BUY = true;
-  const SELL = false;
-  let ACTION = SELL; 
-
-  function openTokenModal(action: boolean) {
-    ACTION = action;
+  // --------------------------- START NEW MODAL/DIALOG CODE
+  function openModal(asset: SetStateAction<number>) {
     const dialog = document.querySelector("#dialogList")
-
     dialog?.showModal();
+
+    setChangeToken(asset);
+    setIsOpen(true);
   }
 
   type ListElement = {
@@ -208,21 +206,23 @@ export default function PriceView({
     decimals: number;
   }
 
-  let emptyToken: ListElement = { chainId: 0, ticker: '', img: '', name: '', address: '', decimals: 0 };
+  let defaultSellToken: ListElement = { chainId: 0, ticker: '', img: '', name: '', address: '', decimals: 0 };
 
-  const [sellListElement, setSellListElement] = useState<ListElement>(emptyToken);
-  const [buyListElement, setBuyListElement] = useState<ListElement>(emptyToken);
+  let [listElement, setListElement] = useState<ListElement>();
+  let [listSellElement, setListSellElement] = useState<ListElement>();
+  let [listBuyElement, setListBuyElement] = useState<ListElement>();
 
-  const getDlgLstElement = (_listElement: ListElement) => {
-    if (ACTION === SELL)
-      setSellListElement(_listElement);
-    else
-      setBuyListElement(_listElement);
+const getDlgLstElement = (_listElement: ListElement) => {
+  alert("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  console.log("index.tsx:: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+  // alert("index.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+  // setListElement(_listElement);
 
-    console.log("index.tsx:: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(_listElement,null,2));
-    alert("index.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(_listElement,null,2));
-    // if (listElement != undefined)
-    //     setSellToken(listElement.name.toLowerCase());
+  //   console.log("index.tsx:: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+  //   alert("index.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
+  //   if (listElement != undefined)
+  //       setSellToken(listElement.name.toLowerCase());
   }
 
   async function onClose() {
@@ -232,10 +232,13 @@ export default function PriceView({
 
   return (
     <form>
+
       <Dialog titleName={dialogName} selectElement={selectElement} dataList={dataList} onClose={onClose} getDlgLstElement={getDlgLstElement}/>
 
       {/* <SpCoinExchange /> */}
-
+      {/* <h1>-----------------------------------------------------------------</h1> */}
+      {/* className={styles.tradeBox} */}
+      {/* <div className="bg-blue-800 dark:bg-slate-800 p-4 rounded-xl mb-3"> */}
       <div className={styles.tradeBox}>
         <div className={styles.tradeBoxHeader}>
           <Image src={spCoin_png} width={30} height={30} alt="Moralis Logo" />
@@ -258,7 +261,6 @@ export default function PriceView({
           <Input id="buy-amount" className={styles.antInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
           {takerAddress ? (
             <ApproveOrReviewButton
-            
               sellTokenAddress={POLYGON_TOKENS_BY_SYMBOL[sellToken].address}
               takerAddress={takerAddress}
               onClick={() => {
@@ -274,24 +276,24 @@ export default function PriceView({
           </div>
  
             {/* {tokenOne.ticker} */}
-            <div className={styles.assetOne} onClick={() => openTokenModal(SELL)}>
+            <div className={styles.assetOne} onClick={() => openModal(1)}>
             <img
               alt={sellToken}
               className="h-9 w-9 mr-2 rounded-md"
               src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
             />
-            {sellListElement.ticker}
+            AAAAA
             {/* {sellToken.toUpperCase()} */}
             <DownOutlined />
           </div>
 
-          <div className={styles.assetTwo} onClick={() => openTokenModal(BUY)}>
+          <div className={styles.assetTwo} onClick={() => openModal(1)}>
             <img
               alt={buyToken}
               className="h-9 w-9 mr-2 rounded-md"
               src={POLYGON_TOKENS_BY_SYMBOL[buyToken].logoURI}
             />
-            {buyListElement.ticker}
+            BBBBB
             {/* {buyToken.toUpperCase()} */}
             {/* {tokenOne.ticker} */}
             <DownOutlined />
@@ -311,11 +313,8 @@ export default function PriceView({
             className="h-9 w-9 mr-2 rounded-md"
             src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
           />
-
           <div className="h-14 sm:w-full sm:mr-2">
-
-            
-            {/* <select
+            <select
               value={sellToken}
               name="sell-token-select"
               id="sell-token-select"
@@ -334,26 +333,6 @@ export default function PriceView({
                 );
               })}
             </select>
-             */}
-            <select
-              value={sellToken}
-              name="sell-token-select"
-              id="sell-token-select"
-              className="mr-2 w-50 sm:w-full h-19 rounded-md  text-black"
-              onChange={handleSellTokenChange}
-            >
-              <option value="">--Choose a token--</option>
-                return (
-                  <option
-                    key={sellListElement.address}
-                    value={sellListElement.ticker.toLowerCase()}
-                  >
-                    {sellListElement.ticker}.toUpperCase()
-                  </option>
-              )
-            </select>
-            
-
           </div>
           <label htmlFor="sell-amount" className="sr-only"></label>
           <input

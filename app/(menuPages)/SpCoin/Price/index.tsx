@@ -102,7 +102,8 @@ export default function PriceView({
     setBuyToken(e.target.value);
   }
 
-  const sellTokenDecimals = POLYGON_TOKENS_BY_SYMBOL[sellToken].decimals;
+  // const sellTokenDecimals = POLYGON_TOKENS_BY_SYMBOL[sellToken].decimals;?
+  const sellTokenDecimals = 18; // ToDo FIX This
 
   console.log(sellAmount, sellTokenDecimals, "<-");
   const parsedSellAmount =
@@ -213,14 +214,18 @@ export default function PriceView({
   const [sellListElement, setSellListElement] = useState<ListElement>(emptyToken);
   const [buyListElement, setBuyListElement] = useState<ListElement>(emptyToken);
 
+
+
   const getDlgLstElement = (_listElement: ListElement) => {
     if (ACTION === SELL)
       setSellListElement(_listElement);
     else
       setBuyListElement(_listElement);
 
-    console.log("index.tsx:: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(_listElement,null,2));
-    alert("index.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(_listElement,null,2));
+
+
+    console.log("index.tsx:: Modifying Token Object " + JSON.stringify(_listElement,null,2));
+    // alert("index.tsx: Modifying Token Object FROM AgentDlgLstB?tn.tsx" + JSON.stringify(_listElement,null,2));
     // if (listElement != undefined)
     //     setSellToken(listElement.name.toLowerCase());
   }
@@ -278,7 +283,7 @@ export default function PriceView({
             <img
               alt={sellToken}
               className="h-9 w-9 mr-2 rounded-md"
-              src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
+              src={sellListElement.img}
             />
             {sellListElement.ticker}
             {/* {sellToken.toUpperCase()} */}
@@ -289,7 +294,7 @@ export default function PriceView({
             <img
               alt={buyToken}
               className="h-9 w-9 mr-2 rounded-md"
-              src={POLYGON_TOKENS_BY_SYMBOL[buyToken].logoURI}
+              src={buyListElement.img}
             />
             {buyListElement.ticker}
             {/* {buyToken.toUpperCase()} */}
@@ -335,6 +340,7 @@ export default function PriceView({
               })}
             </select>
              */}
+
             <select
               value={sellToken}
               name="sell-token-select"
@@ -352,10 +358,10 @@ export default function PriceView({
                   </option>
               )
             </select>
-            
-
           </div>
-          <label htmlFor="sell-amount" className="sr-only"></label>
+
+
+        <label htmlFor="sell-amount" className="sr-only"></label>
           <input
             id="sell-amount"
             value={sellAmount}
@@ -368,6 +374,7 @@ export default function PriceView({
             }}
           />
         </section>
+        
         <section className="flex mb-6 mt-4 items-start justify-center">
           <label htmlFor="buy-token" className="sr-only"></label>
           <img

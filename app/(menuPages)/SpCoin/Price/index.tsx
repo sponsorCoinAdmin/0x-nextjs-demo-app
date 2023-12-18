@@ -15,9 +15,6 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
-
-
-
 type ListElement = {
   chainId: number;
   ticker: string;
@@ -27,7 +24,23 @@ type ListElement = {
   decimals: number;
 }
 
-let emptyToken: ListElement = { chainId: 0, ticker: '', img: '', name: '', address: '', decimals: 0 };
+const defaultSellToken: ListElement = { 
+  chainId: 137,
+  ticker: "WBTC",
+  img: "https://cdn.moralis.io/eth/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png",
+  name: "Wrapped Bitcoin",
+  address: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+  decimals: 8
+ };
+
+ const defaultBuyToken: ListElement = { 
+  chainId: 137,
+  ticker: "USDC",
+  img: "https://cdn.moralis.io/eth/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+  name: "USD Coin",
+  address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+  decimals: 6
+};
 
 
 //-------------- Finish Moralis Requirements ----------------------------------
@@ -81,7 +94,7 @@ export const fetcher = ([endpoint, params]: [string, PriceRequestParams]) => {
   if (!sellAmount && !buyAmount) return;
   const query = qs.stringify(params);
 
-  alert("fetcher([endpoint = " + endpoint + ",\nparams = " + JSON.stringify(params,null,2) + "]")
+  // alert("fetcher([endpoint = " + endpoint + ",\nparams = " + JSON.stringify(params,null,2) + "]")
   console.log("fetcher([endpoint = " + endpoint + ",\nparams = " + JSON.stringify(params,null,2) + "]")
 
   return fetch(`${endpoint}?${query}`).then((res) => res.json());
@@ -107,8 +120,8 @@ export default function PriceView({
 
 
 
-  const [sellListElement, setSellListElement] = useState<ListElement>(emptyToken);
-  const [buyListElement, setBuyListElement] = useState<ListElement>(emptyToken);
+  const [sellListElement, setSellListElement] = useState<ListElement>(defaultSellToken);
+  const [buyListElement, setBuyListElement] = useState<ListElement>(defaultBuyToken);
 
 
 
@@ -209,10 +222,6 @@ export default function PriceView({
 
 
 
-
-
-
-
   // ------------------------------ START MORALIS SCRIPT CODE
 
   let [slippage, setSlippage] = useState(2.5);
@@ -256,9 +265,6 @@ export default function PriceView({
       setBuyListElement(_listElement);
 
     console.log("index.tsx:: Modifying Token Object " + JSON.stringify(_listElement,null,2));
-    // alert("index.tsx: Modifying Token Object FROM AgentDlgLstB?tn.tsx" + JSON.stringify(_listElement,null,2));
-    // if (listElement != undefined)
-    //     setSellToken(listElement.name.toLowerCase());
   }
 
   async function onClose() {

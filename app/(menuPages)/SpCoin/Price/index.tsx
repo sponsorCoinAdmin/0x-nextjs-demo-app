@@ -20,7 +20,7 @@ type ListElement = {
   ticker: string;
   img: string;
   name: string;
-  address: string;
+  address: Address;
   decimals: number;
 }
 
@@ -115,7 +115,6 @@ export default function PriceView({
   const [sellAmount, setSellAmount] = useState("");
   const [buyAmount, setBuyAmount] = useState("");
   const [tradeDirection, setTradeDirection] = useState("sell");
-  const [sellToken, setSellToken] = useState("wmatic");
   const [buyToken, setBuyToken] = useState("dai");
 
 
@@ -135,20 +134,15 @@ export default function PriceView({
     setBuyToken(e.target.value);
   }
 
-  // const sellTokenDecimals = POLYGON_TOKENS_BY_SYMBOL[sellToken].decimals;?
-  const sellTokenDecimals = 18; // ToDo FIX This
-
-  console.log(sellAmount, sellTokenDecimals, "<-");
+  console.log(sellAmount, sellListElement.decimals, "<-");
   const parsedSellAmount =
     sellAmount && tradeDirection === "sell"
-      ? parseUnits(sellAmount, sellTokenDecimals).toString()
+      ? parseUnits(sellAmount, sellListElement.decimals).toString()
       : undefined;
-
-  const buyTokenDecimals = POLYGON_TOKENS_BY_SYMBOL[buyToken].decimals;
 
   const parsedBuyAmount =
     buyAmount && tradeDirection === "buy"
-      ? parseUnits(buyAmount, buyTokenDecimals).toString()
+      ? parseUnits(buyAmount, buyListElement.decimals).toString()
       : undefined;
 
   // const { isLoading: isLoadingPrice } = useSWR(
@@ -169,10 +163,10 @@ export default function PriceView({
   //     onSuccess: (data) => {
   //       setPrice(data);
   //       if (tradeDirection === "sell") {
-  //         console.log(formatUnits(data.buyAmount, buyTokenDecimals), data);
-  //         setBuyAmount(formatUnits(data.buyAmount, buyTokenDecimals));
+  //         console.log(formatUnits(data.buyAmount, buyListElement.decimals), data);
+  //         setBuyAmount(formatUnits(data.buyAmount, buyListElement.decimals));
   //       } else {
-  //         setSellAmount(formatUnits(data.sellAmount, sellTokenDecimals));
+  //         setSellAmount(formatUnits(data.sellAmount, sellListElement.decimals));
   //       }
   //     },
   //   }
@@ -184,7 +178,7 @@ export default function PriceView({
       {
         // sellToken: POLYGON_TOKENS_BY_SYMBOL[sellToken].address,
         sellToken: sellListElement.address,
-        buyToken: POLYGON_TOKENS_BY_SYMBOL[buyToken].address,
+        buyToken: buyListElement.address,
         sellAmount: parsedSellAmount,
         buyAmount: parsedBuyAmount,
         takerAddress,
@@ -197,10 +191,10 @@ export default function PriceView({
       onSuccess: (data) => {
         setPrice(data);
         if (tradeDirection === "sell") {
-          console.log(formatUnits(data.buyAmount, buyTokenDecimals), data);
-          setBuyAmount(formatUnits(data.buyAmount, buyTokenDecimals));
+          console.log(formatUnits(data.buyAmount, buyListElement.decimals), data);
+          setBuyAmount(formatUnits(data.buyAmount, buyListElement.decimals));
         } else {
-          setSellAmount(formatUnits(data.sellAmount, sellTokenDecimals));
+          setSellAmount(formatUnits(data.sellAmount, sellListElement.decimals));
         }
       },
     }
@@ -208,14 +202,14 @@ export default function PriceView({
 
   const { data, isError, isLoading } = useBalance({
     address: takerAddress,
-    token: POLYGON_TOKENS_BY_SYMBOL[sellToken].address,
+    token: sellListElement.address,
   });
 
   console.log(sellAmount);
 
   const disabled =
     data && sellAmount
-      ? parseUnits(sellAmount, sellTokenDecimals) > data.value
+      ? parseUnits(sellAmount, sellListElement.decimals) > data.value
       : true;
 
   console.log(data, isError, isLoading);
@@ -270,7 +264,7 @@ export default function PriceView({
   async function onClose() {
       console.log("Modal has closed")
   }
-// --------------------------- END NEW MODAL/DIALOG CODE
+// --------------------------- END NEW MODAL/DIALOG CODE -----------------------------------------------------
 
   return (
     <form>
@@ -301,7 +295,7 @@ export default function PriceView({
           {takerAddress ? (
             <ApproveOrReviewButton
             
-              sellTokenAddress={POLYGON_TOKENS_BY_SYMBOL[sellToken].address}
+              sellTokenAddress={sellListElement.address}
               takerAddress={takerAddress}
               onClick={() => {
                 setFinalize(true);
@@ -318,12 +312,11 @@ export default function PriceView({
             {/* {tokenOne.ticker} */}
             <div className={styles.assetOne} onClick={() => openTokenModal(SELL)}>
             <img
-              alt={sellToken}
+              alt={sellListElement.name}
               className="h-9 w-9 mr-2 rounded-md"
               src={sellListElement.img}
             />
             {sellListElement.ticker}
-            {/* {sellToken.toUpperCase()} */}
             <DownOutlined />
           </div>
 
@@ -334,8 +327,6 @@ export default function PriceView({
               src={buyListElement.img}
             />
             {buyListElement.ticker}
-            {/* {buyToken.toUpperCase()} */}
-            {/* {tokenOne.ticker} */}
             <DownOutlined />
           </div>
         </div>

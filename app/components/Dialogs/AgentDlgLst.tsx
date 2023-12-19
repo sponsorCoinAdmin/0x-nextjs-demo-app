@@ -3,13 +3,14 @@ import { useSearchParams } from 'next/navigation'
 import { useRef, useEffect, useState, ReactNode } from 'react'
 import DataList from './DataList'
 import InputSelect from './InputSelect'
+import { type Address } from "wagmi";
 
 type ListElement = {
     chainId: number;
     ticker: string; 
     img: string; 
     name: string; 
-    address: string; 
+    address: Address; 
     decimals: number;
 }
 

@@ -57,7 +57,7 @@ rounded-xl
   bg-blue-300
 }
 
-.antInput {
+.priceInput {
   background-color: #1f2639 !important;
   color: rgb(26, 55, 88) !important;
   border-width: 0px !important;

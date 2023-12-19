@@ -7,7 +7,7 @@ import { type Address } from "wagmi";
 
 // import dataList from '../Resources/data/tokenEthList.json';
 import dataList from '../Dialogs/Resources/data/tokenEthList.json';
-
+const titleName ='Select an agent';
 
 type ListElement = {
     chainId: number;
@@ -19,13 +19,11 @@ type ListElement = {
 }
 
 type Props = {
-    titleName: any,
     selectElement: string,
-    onClose:  () => void,
     getDlgLstElement: (listElement: ListElement) => void,
 }
 
-export default function Dialog({ titleName, selectElement, onClose, getDlgLstElement}: Props) {
+export default function Dialog({ selectElement, getDlgLstElement}: Props) {
 // alert("PARSED dataList: ListElement[] = " + JSON.stringify(dataList, null, 2))
 
     const dialogRef = useRef<null | HTMLDialogElement>(null)
@@ -37,7 +35,6 @@ export default function Dialog({ titleName, selectElement, onClose, getDlgLstEle
 
     const closeDialog = () => {
         dialogRef.current?.close()
-        onClose()
     }
 
     const dialog = (

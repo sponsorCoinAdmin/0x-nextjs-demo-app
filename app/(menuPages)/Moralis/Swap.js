@@ -259,8 +259,8 @@ async function fetchDexSwap(){
           </Popover>
         </div>
         <div className={styles.inputs}>
-          <Input className={styles.antInput} placeholder="0" value={tokenOneAmount} onChange={changeAmount} disabled={!prices} />
-          <Input className={styles.antInput} placeholder="0" value={tokenTwoAmount} disabled={true} />
+          <Input className={styles.priceInput} placeholder="0" value={tokenOneAmount} onChange={changeAmount} disabled={!prices} />
+          <Input className={styles.priceInput} placeholder="0" value={tokenTwoAmount} disabled={true} />
           <div className={styles.switchButton} onClick={switchTokens}>
             <ArrowDownOutlined className={styles.switchArrow} />
           </div>

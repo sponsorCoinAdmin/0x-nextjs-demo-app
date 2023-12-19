@@ -43,27 +43,16 @@ const defaultSellToken: ListElement = {
   decimals: 6
 };
 
-
 //-------------- Finish Moralis Requirements ----------------------------------
 
 import ApproveOrReviewButton from '../components/Buttons/ApproveOrReviewButton';
 import CustomConnectButton from '../components/Buttons/CustomConnectButton';
-
-
-
-
-
 
 import qs from "qs";
 import useSWR from "swr";
 import { useState, ChangeEvent, SetStateAction } from "react";
 import { formatUnits, parseUnits } from "ethers";
 import {
-  erc20ABI,
-  useContractRead,
-  usePrepareContractWrite,
-  useContractWrite,
-  useWaitForTransaction,
   useBalance,
   type Address,
 } from "wagmi";
@@ -79,11 +68,11 @@ interface PriceRequestParams {
 
 
 
-const dialogName ='Select an agent';
 const selectElement ='Search agent name or paste address';
 
 const AFFILIATE_FEE = 0.01; // Percentage of the buyAmount that should be attributed to feeRecipient as affiliate fees
 const FEE_RECIPIENT = "0x75A94931B81d81C7a62b76DC0FcFAC77FbE1e917"; // The ETH address that should receive affiliate fees
+
 
 export const fetcher = ([endpoint, params]: [string, PriceRequestParams]) => {
   const { sellAmount, buyAmount } = params;
@@ -158,14 +147,14 @@ export default function PriceView({
     token: sellListElement.address,
   });
 
-  console.log(sellAmount);
+  // console.log(sellAmount);
 
   const disabled =
     data && sellAmount
       ? parseUnits(sellAmount, sellListElement.decimals) > data.value
       : true;
 
-  console.log(data, isError, isLoading);
+  console.log("data = " + data, "isError = " + isError, "isLoading = " + isLoading);
 
   // ------------------------------ START MORALIS SCRIPT CODE
 
@@ -216,15 +205,11 @@ export default function PriceView({
     setSellListElement(buyListElement);
     setBuyListElement(tmpElement);
   }
-
-  async function onClose() {
-      console.log("Modal has closed")
-  }
 // --------------------------- END NEW MODAL/DIALOG CODE -----------------------------------------------------
 
   return (
     <form>
-      <Dialog titleName={dialogName} selectElement={selectElement} onClose={onClose} getDlgLstElement={getDlgLstElement}/>
+      <Dialog selectElement={selectElement} getDlgLstElement={getDlgLstElement}/>
 
       {/* <SpCoinExchange /> */}
 
@@ -242,12 +227,13 @@ export default function PriceView({
           </Popover>
         </div>
         <div className={styles.inputs}>
-          <Input id="sell-amount" className={styles.antInput} placeholder="0" disabled={false} 
+          <Input id="sell-amount" className={styles.priceInput} placeholder="0" disabled={false} 
             onChange={(e) => {
                 setTradeDirection("sell");
                 setSellAmount(e.target.value);
-            }}/>
-          <Input id="buy-amount" className={styles.antInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
+            }}
+          />
+          <Input id="buy-amount" className={styles.priceInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
           {takerAddress ? (
             <ApproveOrReviewButton
               sellTokenAddress={sellListElement.address}
@@ -258,14 +244,14 @@ export default function PriceView({
               disabled={disabled}
             />
             ) : (
-          <CustomConnectButton />)}
+            <CustomConnectButton />)}
          
           <div className={styles.switchButton} onClick={switchTokens}>
               <ArrowDownOutlined className={styles.switchArrow} />
           </div>
  
-            {/* {tokenOne.ticker} */}
-            <div className={styles.assetOne} onClick={() => openTokenModal(SELL)}>
+          {/* {tokenOne.ticker} */}
+          <div className={styles.assetOne} onClick={() => openTokenModal(SELL)}>
             <img
               alt={sellListElement.name}
               className="h-9 w-9 mr-2 rounded-md"

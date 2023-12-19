@@ -387,12 +387,12 @@ export default function PriceView({
           </Popover>
         </div>
         <div className={styles.inputs}>
-          <Input id="sell-amount" className={styles.antInput} placeholder="0" disabled={false} 
+          <Input id="sell-amount" className={styles.priceInput} placeholder="0" disabled={false} 
             onChange={(e) => {
                 setTradeDirection("sell");
                 setSellAmount(e.target.value);
             }}/>
-          <Input id="buy-amount" className={styles.antInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
+          <Input id="buy-amount" className={styles.priceInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
           {takerAddress ? (
             <ApproveOrReviewButton
             

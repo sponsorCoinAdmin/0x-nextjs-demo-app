@@ -250,7 +250,6 @@ export default function PriceView({
               <ArrowDownOutlined className={styles.switchArrow} />
           </div>
  
-          {/* {tokenOne.ticker} */}
           <div className={styles.assetOne} onClick={() => openTokenModal(SELL)}>
             <img
               alt={sellListElement.name}

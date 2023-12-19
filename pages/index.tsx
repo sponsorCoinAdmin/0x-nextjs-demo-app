@@ -17,14 +17,14 @@ export default function Home() {
     >
       {finalize && price ? (
         <QuoteView
-          takerAddress={address}
+          connectedWalletAddr={address}
           price={price}
           quote={quote}
           setQuote={setQuote}
         />
       ) : (
         <PriceView
-          takerAddress={address}
+          connectedWalletAddr={address}
           price={price}
           setPrice={setPrice}
           setFinalize={setFinalize}

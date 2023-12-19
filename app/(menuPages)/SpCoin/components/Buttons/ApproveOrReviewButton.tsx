@@ -7,39 +7,37 @@ import {
     usePrepareContractWrite,
     useContractWrite,
     useWaitForTransaction,
-    useBalance,
     type Address,
   } from "wagmi";
+
   import {
-    POLYGON_TOKENS,
-    POLYGON_TOKENS_BY_SYMBOL,
-    POLYGON_TOKENS_BY_ADDRESS,
     MAX_ALLOWANCE,
     exchangeProxy,
   } from "../../lib/constants";
 
 function ApproveOrReviewButton({
-    takerAddress,
+    connectedWalletAddr,
     onClick,
-    sellTokenAddress,
+    tokenToSellAddr,
     disabled,
   }: {
-    takerAddress: Address;
+    connectedWalletAddr: Address;
     onClick: () => void;
-    sellTokenAddress: Address;
+    tokenToSellAddr: Address;
     disabled?: boolean;
   }) {
+    // console.log("connectedWalletAddr: " + connectedWalletAddr);
     // 1. Read from erc20, does spender (0x Exchange Proxy) have allowance?
     const { data: allowance, refetch } = useContractRead({
-      address: sellTokenAddress,
+      address: tokenToSellAddr,
       abi: erc20ABI,
       functionName: "allowance",
-      args: [takerAddress, exchangeProxy],
+      args: [connectedWalletAddr, exchangeProxy],
     });
   
     // 2. (only if no allowance): write to erc20, approve 0x Exchange Proxy to spend max integer
     const { config } = usePrepareContractWrite({
-      address: sellTokenAddress,
+      address: tokenToSellAddr,
       abi: erc20ABI,
       functionName: "approve",
       args: [exchangeProxy, MAX_ALLOWANCE],

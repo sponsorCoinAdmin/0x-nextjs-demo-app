@@ -5,7 +5,6 @@ import type { PriceResponse } from "./api/types";
 import { useAccount } from "wagmi";
 
 export default function Home() {
-  const [tradeDirection, setTradeDirection] = useState("sell");
   const [finalize, setFinalize] = useState(false);
   const [price, setPrice] = useState<PriceResponse | undefined>();
   const [quote, setQuote] = useState();
@@ -17,14 +16,14 @@ export default function Home() {
     >
       {finalize && price ? (
         <QuoteView
-          takerAddress={address}
+          connectedWalletAddr={address}
           price={price}
           quote={quote}
           setQuote={setQuote}
         />
       ) : (
         <PriceView
-          takerAddress={address}
+          connectedWalletAddr={address}
           price={price}
           setPrice={setPrice}
           setFinalize={setFinalize}

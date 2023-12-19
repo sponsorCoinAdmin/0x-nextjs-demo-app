@@ -12,9 +12,9 @@ export interface PriceResponse {
   estimatedGas: string;
   protocolFee: string;
   minimumProtocolFee: string;
-  buyTokenAddress: string;
+  tokenToBuyAddr: string;
   buyAmount: string;
-  sellTokenAddress: string;
+  tokenToSellAddr: string;
   sellAmount: string;
   sources: any[];
   allowanceTarget: string;
@@ -39,8 +39,8 @@ export interface QuoteResponse {
   grossBuyAmount: string;
   protocolFee: string;
   minimumProtocolFee: string;
-  buyTokenAddress: string;
-  sellTokenAddress: string;
+  tokenToBuyAddr: string;
+  tokenToSellAddr: string;
   buyAmount: string;
   sellAmount: string;
   sources: any[];

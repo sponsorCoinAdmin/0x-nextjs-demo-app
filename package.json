@@ -12,6 +12,7 @@
     "@svgr/webpack": "^8.1.0",
     "antd": "^5.12.1",
     "autoprefixer": "10.4.14",
+    "axios": "^1.6.2",
     "connectkit": "^1.4.0",
     "eslint-config-next": "12.3.4",
     "ethers": "^6.4.0",

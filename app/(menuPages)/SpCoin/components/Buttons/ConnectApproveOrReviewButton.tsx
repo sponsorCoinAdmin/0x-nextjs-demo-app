@@ -1,42 +1,31 @@
 import React from 'react'
 import ApproveOrReviewButton from './ApproveOrReviewButton';
 import CustomConnectButton from './CustomConnectButton';
+import { type Address } from "wagmi";
 
-import {
-    erc20ABI,
-    useContractRead,
-    usePrepareContractWrite,
-    useContractWrite,
-    useWaitForTransaction,
-    useBalance,
-    type Address,
-  } from "wagmi";
   import {
-    POLYGON_TOKENS,
-    POLYGON_TOKENS_BY_SYMBOL,
-    POLYGON_TOKENS_BY_ADDRESS,
     MAX_ALLOWANCE,
     exchangeProxy,
   } from "../../lib/constants";
 
 
 function ConnectApproveOrReviewButton({
-    takerAddress,
+    connectedWalletAddr,
     onClick,
-    sellTokenAddress,
+    tokenToSellAddr,
     disabled,
   }: {
-    takerAddress: Address;
+    connectedWalletAddr: Address;
     onClick: () => void;
-    sellTokenAddress: Address;
+    tokenToSellAddr: Address;
     disabled?: boolean;
   }) {
   return (
     <div>
-      {takerAddress ? (
+      {connectedWalletAddr ? (
         <ApproveOrReviewButton
-          sellTokenAddress={sellTokenAddress}
-          takerAddress={takerAddress}
+          tokenToSellAddr={tokenToSellAddr}
+          connectedWalletAddr={connectedWalletAddr}
           onClick={onClick}
           disabled={disabled}
         />

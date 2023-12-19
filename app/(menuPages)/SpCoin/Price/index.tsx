@@ -1,14 +1,10 @@
 'use client'
 import styles from '../styles/SpCoin.module.css'
 import '../styles/SpCoin.module.css'
+import Image from 'next/image'
 import spCoin_png from '../components/images/spCoin.png'
-// import dataList from '../Resources/data/tokenEthList.json';
-// import dataList from '../../../components/Dialogs/Resources/data/tokenEthList.json';
-
-import jsonList from '../../../components/Dialogs/Resources/data/tokenPolyList.json';
 import Dialog from '../../../components/Dialogs/Dialog';
 
-import Image from 'next/image'
 import { Input, Popover, Radio, Modal, message } from "antd";
 import {
   ArrowDownOutlined,
@@ -62,7 +58,7 @@ interface PriceRequestParams {
   buyToken: string;
   buyAmount?: string;
   sellAmount?: string;
-  takerAddress?: string;
+  connectedWalletAddr?: string;
 }
 
 
@@ -89,12 +85,12 @@ export default function PriceView({
   price,
   setPrice,
   setFinalize,
-  takerAddress,
+  connectedWalletAddr,
 }: {
   price: any;
   setPrice: (price: any) => void;
   setFinalize: (finalize: boolean) => void;
-  takerAddress: Address | undefined;
+  connectedWalletAddr: Address | undefined;
 }) {
   // fetch price here
   const [sellAmount, setSellAmount] = useState("");
@@ -104,7 +100,6 @@ export default function PriceView({
   const [sellListElement, setSellListElement] = useState<ListElement>(defaultSellToken);
   const [buyListElement, setBuyListElement] = useState<ListElement>(defaultBuyToken);
 
-  console.log(sellAmount, sellListElement.decimals, "<-");
   const parsedSellAmount =
     sellAmount && tradeDirection === "sell"
       ? parseUnits(sellAmount, sellListElement.decimals).toString()
@@ -123,7 +118,7 @@ export default function PriceView({
         buyToken: buyListElement.address,
         sellAmount: parsedSellAmount,
         buyAmount: parsedBuyAmount,
-        takerAddress,
+        connectedWalletAddr,
         feeRecipient: FEE_RECIPIENT,
         buyTokenPercentageFee: AFFILIATE_FEE,
       },
@@ -143,7 +138,7 @@ export default function PriceView({
   );
 
   const { data, isError, isLoading } = useBalance({
-    address: takerAddress,
+    address: connectedWalletAddr,
     token: sellListElement.address,
   });
 
@@ -154,7 +149,7 @@ export default function PriceView({
       ? parseUnits(sellAmount, sellListElement.decimals) > data.value
       : true;
 
-  console.log("data = " + data, "isError = " + isError, "isLoading = " + isLoading);
+  // console.log("data = " + JSON.stringify(data, null, 2), "\nisError = " + isError, "isLoading = " + isLoading);
 
   // ------------------------------ START MORALIS SCRIPT CODE
 
@@ -180,23 +175,19 @@ export default function PriceView({
 
   // --------------------------- START NEW MODAL/DIALOG CODE -----------------------------------------------------
   
-  const BUY = true;
-  const SELL = false;
-  let ACTION = SELL; 
+  const SET_BUY_TOKEN = true;
+  const SET_SELL_TOKEN = false;
+  let BUY_SELL_ACTION = SET_SELL_TOKEN; 
 
   function openTokenModal(_action: boolean) {
-    ACTION = _action;
+    BUY_SELL_ACTION = _action;
     const dialog = document.querySelector("#dialogList")
 
     dialog?.showModal();
   }
 
   const getDlgLstElement = (_listElement: ListElement) => {
-    if (ACTION === SELL)
-      setSellListElement(_listElement);
-    else
-      setBuyListElement(_listElement);
-
+    BUY_SELL_ACTION === SET_SELL_TOKEN ? setSellListElement(_listElement) : setBuyListElement(_listElement);
     console.log("index.tsx:: Modifying Token Object " + JSON.stringify(_listElement,null,2));
   }
 
@@ -227,17 +218,17 @@ export default function PriceView({
           </Popover>
         </div>
         <div className={styles.inputs}>
-          <Input id="sell-amount" className={styles.priceInput} placeholder="0" disabled={false} 
+          <Input id="sell-amount-id" className={styles.priceInput} placeholder="0" disabled={false} 
             onChange={(e) => {
                 setTradeDirection("sell");
                 setSellAmount(e.target.value);
             }}
           />
-          <Input id="buy-amount" className={styles.priceInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
-          {takerAddress ? (
+          <Input id="buy-amount-id" className={styles.priceInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
+          {connectedWalletAddr ? (
             <ApproveOrReviewButton
-              sellTokenAddress={sellListElement.address}
-              takerAddress={takerAddress}
+              tokenToSellAddr={sellListElement.address}
+              connectedWalletAddr={connectedWalletAddr}
               onClick={() => {
                 setFinalize(true);
               }}
@@ -250,7 +241,7 @@ export default function PriceView({
               <ArrowDownOutlined className={styles.switchArrow} />
           </div>
  
-          <div className={styles.assetOne} onClick={() => openTokenModal(SELL)}>
+          <div className={styles.assetOne} onClick={() => openTokenModal(SET_SELL_TOKEN)}>
             <img
               alt={sellListElement.name}
               className="h-9 w-9 mr-2 rounded-md"
@@ -260,7 +251,7 @@ export default function PriceView({
             <DownOutlined />
           </div>
 
-          <div className={styles.assetTwo} onClick={() => openTokenModal(BUY)}>
+          <div className={styles.assetTwo} onClick={() => openTokenModal(SET_BUY_TOKEN)}>
             <img
               alt={buyListElement.name}
               className="h-9 w-9 mr-2 rounded-md"

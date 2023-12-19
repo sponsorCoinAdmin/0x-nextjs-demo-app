@@ -1,11 +1,22 @@
-import SpCoinExchange from '../components/SpCoinExchange'
+'use client'
 import styles from '../styles/SpCoin.module.css'
 import '../styles/SpCoin.module.css'
 import spCoin_png from '../components/images/spCoin.png'
 // import dataList from '../Resources/data/tokenEthList.json';
-import dataList from '../../../components/Dialogs/Resources/data/tokenEthList.json';
-import Dialog from '../../../components/Dialogs/Dialog';
+// import dataList from '../../../components/Dialogs/Resources/data/tokenEthList.json';
+// import dataList from '../../../components/Dialogs/Resources/data/tokenPolyList.json';
 
+type ListElement2 = {
+  chainId: number;
+  ticker: string;
+  img: string;
+  name: string;
+  address: Address;
+  decimals: number;
+}
+
+import jsonList from '../../../components/Dialogs/Resources/data/tokenPolyList.json';
+import Dialog from '../../../components/Dialogs/Dialog';
 
 import Image from 'next/image'
 import { Input, Popover, Radio, Modal, message } from "antd";
@@ -16,14 +27,172 @@ import {
 } from "@ant-design/icons";
 
 
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+type ListElement = {
+  chainId: number;
+  ticker: string;
+  img: string;
+  name: string;
+  address: Address;
+  decimals: number;
+}
+
+let dataList: ListElement[] = [
+  {
+      "chainId": 1,
+      "ticker": "USDC",
+      "img": "https://cdn.moralis.io/eth/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+      "name": "USD Coin",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "decimals": 6
+  },
+  {
+      "chainId": 1,
+      "ticker": "LINK",
+      "img": "https://cdn.moralis.io/eth/0x514910771af9ca656af840dff83e8264ecf986ca.png",
+      "name": "Chainlink",
+      "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "USDT",
+      "img": "https://cdn.moralis.io/eth/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
+      "name": "Tether USD",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "decimals": 6
+  },
+  {
+      "chainId": 1,
+      "ticker": "GUSD",
+      "img": "https://cdn.moralis.io/eth/0x056fd409e1d7a124bd7017459dfea2f387b6d5cd.png",
+      "name": "Gemini USD",
+      "address": "0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd",
+      "decimals": 2
+  },
+  {
+      "chainId": 1,
+      "ticker": "DAI",
+      "img": "https://cdn.moralis.io/eth/0x6b175474e89094c44da98b954eedeac495271d0f.png",
+      "name": "Dai Stablecoin",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "WETH",
+      "img": "https://cdn.moralis.io/eth/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+      "name": "Wrapped Ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "WBTC",
+      "img": "https://cdn.moralis.io/eth/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png",
+      "name": "Wrapped Bitcoin",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+      "decimals": 8
+  },
+  {
+      "chainId": 1,
+      "ticker": "MATIC",
+      "img": "https://cdn.moralis.io/eth/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0.png",
+      "name": "Matic Token",
+      "address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "UNI",
+      "img": "https://cdn.moralis.io/eth/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984.png",
+      "name": "Uniswap",
+      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "CRV",
+      "img": "https://cdn.moralis.io/eth/0xd533a949740bb3306d119cc777fa900ba034cd52.png",
+      "name": "Curve DAO Token",
+      "address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "MKR",
+      "img": "https://cdn.moralis.io/eth/0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2.png",
+      "name": "Maker",
+      "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "SHIB",
+      "img": "https://cdn.moralis.io/eth/0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce.png",
+      "name": "Shiba Inu",
+      "address": "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "AAVE",
+      "img": "https://cdn.moralis.io/eth/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9.png",
+      "name": "AAVE",
+      "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+      "decimals": 18
+  },
+  {
+      "chainId": 1,
+      "ticker": "SPCT_V001",
+      "img": "https://cdn.moralis.io/eth/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+      "name": "Sponsor Coin",
+      "address": "0x7d4e590f15E424Dd635822529a2b24D7Bc18935a",
+      "decimals": 18
+  }
+]
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+
+
+
+
+
+
+
+
+
+const defaultSellToken: ListElement = { 
+  chainId: 137,
+  ticker: "WBTC",
+  img: "https://cdn.moralis.io/eth/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png",
+  name: "Wrapped Bitcoin",
+  address: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+  decimals: 8
+ };
+
+ const defaultBuyToken: ListElement = { 
+  chainId: 137,
+  ticker: "USDC",
+  img: "https://cdn.moralis.io/eth/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+  name: "USD Coin",
+  address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+  decimals: 6
+};
+
+
 //-------------- Finish Moralis Requirements ----------------------------------
 
 import ApproveOrReviewButton from '../components/Buttons/ApproveOrReviewButton';
 import CustomConnectButton from '../components/Buttons/CustomConnectButton';
-import ConnectApproveOrReviewButton from '../components/Buttons/ConnectApproveOrReviewButton';
-
-
-
 
 
 
@@ -44,14 +213,6 @@ import {
   type Address,
 } from "wagmi";
 
-import {
-  POLYGON_TOKENS,
-  POLYGON_TOKENS_BY_SYMBOL,
-  POLYGON_TOKENS_BY_ADDRESS,
-  MAX_ALLOWANCE,
-  exchangeProxy,
-} from "../lib/constants";
-
 interface PriceRequestParams {
   sellToken: string;
   buyToken: string;
@@ -59,6 +220,9 @@ interface PriceRequestParams {
   sellAmount?: string;
   takerAddress?: string;
 }
+
+
+
 
 const dialogName ='Select an agent';
 const selectElement ='Search agent name or paste address';
@@ -70,6 +234,9 @@ export const fetcher = ([endpoint, params]: [string, PriceRequestParams]) => {
   const { sellAmount, buyAmount } = params;
   if (!sellAmount && !buyAmount) return;
   const query = qs.stringify(params);
+
+  // alert("fetcher([endpoint = " + endpoint + ",\nparams = " + JSON.stringify(params,null,2) + "]")
+  console.log("fetcher([endpoint = " + endpoint + ",\nparams = " + JSON.stringify(params,null,2) + "]")
 
   return fetch(`${endpoint}?${query}`).then((res) => res.json());
 };
@@ -89,72 +256,27 @@ export default function PriceView({
   const [sellAmount, setSellAmount] = useState("");
   const [buyAmount, setBuyAmount] = useState("");
   const [tradeDirection, setTradeDirection] = useState("sell");
-  const [sellToken, setSellToken] = useState("wmatic");
-  const [buyToken, setBuyToken] = useState("dai");
 
-  // **START** NEW Dialog Design STUFF
+  const [sellListElement, setSellListElement] = useState<ListElement>(defaultSellToken);
+  const [buyListElement, setBuyListElement] = useState<ListElement>(defaultBuyToken);
 
-  type ListElement = {
-    chainId: number;
-    ticker: string;
-    img: string;
-    name: string;
-    address: string;
-    decimals: number;
-  }
-
-  /*
-  const defaultBuyElement = {  chainId: 1,
-    ticker: string
-    img: string
-    name: string
-    address: string
-    decimals: number};
-*/
-
-  const [buyElement, setBuyElement] = useState(undefined);
-  const [sellElement, setSellElement] = useState(undefined);
-
-  const getDlgLstElement = async(listElement: ListElement) => {
-    console.log("Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
-    setSellToken("usdt");
-
-    alert("IndexBAK.tsx: Modifying Token Object FROM AgentDlgLstBtn.tsx" + JSON.stringify(listElement,null,2));
-  }
-
-  // **STOP** NEW Dialog Design STUFF
-
-  const handleSellTokenChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    alert("handleSellTokenChange = " + e.target.value)
-    setSellToken(e.target.value);
-  };
-
-  function handleBuyTokenChange(e: ChangeEvent<HTMLSelectElement>) {
-    alert("e.target.value = "+JSON.stringify(e.target.value,null,2))
-    setBuyToken(e.target.value);
-  }
-
-  const sellTokenDecimals = POLYGON_TOKENS_BY_SYMBOL[sellToken].decimals;
-
-  console.log(sellAmount, sellTokenDecimals, "<-");
+  console.log(sellAmount, sellListElement.decimals, "<-");
   const parsedSellAmount =
     sellAmount && tradeDirection === "sell"
-      ? parseUnits(sellAmount, sellTokenDecimals).toString()
+      ? parseUnits(sellAmount, sellListElement.decimals).toString()
       : undefined;
-
-  const buyTokenDecimals = POLYGON_TOKENS_BY_SYMBOL[buyToken].decimals;
 
   const parsedBuyAmount =
     buyAmount && tradeDirection === "buy"
-      ? parseUnits(buyAmount, buyTokenDecimals).toString()
+      ? parseUnits(buyAmount, buyListElement.decimals).toString()
       : undefined;
 
   const { isLoading: isLoadingPrice } = useSWR(
     [
       "/api/price",
       {
-        sellToken: POLYGON_TOKENS_BY_SYMBOL[sellToken].address,
-        buyToken: POLYGON_TOKENS_BY_SYMBOL[buyToken].address,
+        sellToken: sellListElement.address,
+        buyToken: buyListElement.address,
         sellAmount: parsedSellAmount,
         buyAmount: parsedBuyAmount,
         takerAddress,
@@ -167,10 +289,10 @@ export default function PriceView({
       onSuccess: (data) => {
         setPrice(data);
         if (tradeDirection === "sell") {
-          console.log(formatUnits(data.buyAmount, buyTokenDecimals), data);
-          setBuyAmount(formatUnits(data.buyAmount, buyTokenDecimals));
+          console.log(formatUnits(data.buyAmount, buyListElement.decimals), data);
+          setBuyAmount(formatUnits(data.buyAmount, buyListElement.decimals));
         } else {
-          setSellAmount(formatUnits(data.sellAmount, sellTokenDecimals));
+          setSellAmount(formatUnits(data.sellAmount, sellListElement.decimals));
         }
       },
     }
@@ -178,25 +300,19 @@ export default function PriceView({
 
   const { data, isError, isLoading } = useBalance({
     address: takerAddress,
-    token: POLYGON_TOKENS_BY_SYMBOL[sellToken].address,
+    token: sellListElement.address,
   });
 
   console.log(sellAmount);
 
   const disabled =
     data && sellAmount
-      ? parseUnits(sellAmount, sellTokenDecimals) > data.value
+      ? parseUnits(sellAmount, sellListElement.decimals) > data.value
       : true;
 
   console.log(data, isError, isLoading);
 
-
-
-
-
-
-
-  // ------------------------------ START NEW MORALIS SCRIPT CODE
+  // ------------------------------ START MORALIS SCRIPT CODE
 
   let [slippage, setSlippage] = useState(2.5);
   function handleSlippageChange(e: { target: { value: SetStateAction<number>; }; }) {
@@ -216,31 +332,47 @@ export default function PriceView({
     </div>
   );
 
-let [changeToken, setChangeToken] = useState(1);
-let [isOpen, setIsOpen] = useState(false);
+  // ------------------------------ END MORALIS SCRIPT CODE ------------------------------------------------------
 
-function openModal(asset: SetStateAction<number>) {
-  const dialog = document.querySelector("#dialogList")
-  dialog?.showModal()
+  // --------------------------- START NEW MODAL/DIALOG CODE -----------------------------------------------------
+  
+  const BUY = true;
+  const SELL = false;
+  let ACTION = SELL; 
 
-  setChangeToken(asset);
-  setIsOpen(true);
-}
+  function openTokenModal(action: boolean) {
+    ACTION = action;
+    const dialog = document.querySelector("#dialogList")
 
-  // ------------------------------ END NEW MORALIS SCRIPT CODE
+    dialog?.showModal();
+  }
+
+  const getDlgLstElement = (_listElement: ListElement) => {
+    if (ACTION === SELL)
+      setSellListElement(_listElement);
+    else
+      setBuyListElement(_listElement);
+
+    console.log("index.tsx:: Modifying Token Object " + JSON.stringify(_listElement,null,2));
+  }
+
+  function switchTokens() {
+    let tmpElement: ListElement = sellListElement;
+    setSellListElement(buyListElement);
+    setBuyListElement(tmpElement);
+  }
+
   async function onClose() {
       console.log("Modal has closed")
   }
+// --------------------------- END NEW MODAL/DIALOG CODE -----------------------------------------------------
 
   return (
     <form>
-
       <Dialog titleName={dialogName} selectElement={selectElement} dataList={dataList} onClose={onClose} getDlgLstElement={getDlgLstElement}/>
 
       {/* <SpCoinExchange /> */}
-      {/* <h1>-----------------------------------------------------------------</h1> */}
-      {/* className={styles.tradeBox} */}
-      {/* <div className="bg-blue-800 dark:bg-slate-800 p-4 rounded-xl mb-3"> */}
+
       <div className={styles.tradeBox}>
         <div className={styles.tradeBoxHeader}>
           <Image src={spCoin_png} width={30} height={30} alt="Moralis Logo" />
@@ -263,7 +395,8 @@ function openModal(asset: SetStateAction<number>) {
           <Input id="buy-amount" className={styles.antInput} placeholder="0" disabled={true} value={parseFloat(buyAmount).toFixed(6)} />
           {takerAddress ? (
             <ApproveOrReviewButton
-              sellTokenAddress={POLYGON_TOKENS_BY_SYMBOL[sellToken].address}
+            
+              sellTokenAddress={sellListElement.address}
               takerAddress={takerAddress}
               onClick={() => {
                 setFinalize(true);
@@ -273,130 +406,46 @@ function openModal(asset: SetStateAction<number>) {
             ) : (
           <CustomConnectButton />)}
          
-          <div className={styles.switchButton} >
+          <div className={styles.switchButton} onClick={switchTokens}>
               <ArrowDownOutlined className={styles.switchArrow} />
           </div>
  
             {/* {tokenOne.ticker} */}
-            <div className={styles.assetOne} onClick={() => openModal(1)}>
+            <div className={styles.assetOne} onClick={() => openTokenModal(SELL)}>
             <img
-              alt={sellToken}
+              alt={sellListElement.name}
               className="h-9 w-9 mr-2 rounded-md"
-              src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
+              src={sellListElement.img}
             />
-            AAAAA
-            {/* {sellToken.toUpperCase()} */}
+            {sellListElement.ticker}
             <DownOutlined />
           </div>
 
-          <div className={styles.assetTwo} onClick={() => openModal(1)}>
+          <div className={styles.assetTwo} onClick={() => openTokenModal(BUY)}>
             <img
-              alt={buyToken}
+              alt={buyListElement.name}
               className="h-9 w-9 mr-2 rounded-md"
-              src={POLYGON_TOKENS_BY_SYMBOL[buyToken].logoURI}
+              src={buyListElement.img}
             />
-            BBBBB
-            {/* {buyToken.toUpperCase()} */}
-            {/* {tokenOne.ticker} */}
+            {buyListElement.ticker}
             <DownOutlined />
           </div>
         </div>
 
-
-
 {/* OX Code */}
 
-
-
-        <section className="mt-4 flex items-start justify-center">
-          <label htmlFor="sell-select" className="sr-only"></label>
-          <img
-            alt={sellToken}
-            className="h-9 w-9 mr-2 rounded-md"
-            src={POLYGON_TOKENS_BY_SYMBOL[sellToken].logoURI}
-          />
-          <div className="h-14 sm:w-full sm:mr-2">
-            <select
-              value={sellToken}
-              name="sell-token-select"
-              id="sell-token-select"
-              className="mr-2 w-50 sm:w-full h-19 rounded-md  text-black"
-              onChange={handleSellTokenChange}
-            >
-              <option value="">--Choose a token--</option>
-              {POLYGON_TOKENS.map((token) => {
-                return (
-                  <option
-                    key={token.address}
-                    value={token.symbol.toLowerCase()}
-                  >
-                    {token.symbol}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <label htmlFor="sell-amount" className="sr-only"></label>
-          <input
-            id="sell-amount"
-            value={sellAmount}
-            className="h-9 rounded-md
-            text-black"
-            style={{ border: "1px solid black" }}
-            onChange={(e) => {
-              setTradeDirection("sell");
-              setSellAmount(e.target.value);
-            }}
-          />
-        </section>
-        <section className="flex mb-6 mt-4 items-start justify-center">
-          <label htmlFor="buy-token" className="sr-only"></label>
-          <img
-            alt={buyToken}
-            className="h-9 w-9 mr-2 rounded-md"
-            src={POLYGON_TOKENS_BY_SYMBOL[buyToken].logoURI}
-          />
-          <select
-            name="buy-token-select"
-            id="buy-token-select"
-            value={buyToken}
-            className="mr-2 w-50 sm:w-full h-9 rounded-md  text-black"
-            onChange={(e) => handleBuyTokenChange(e)}
-          >
-            <option value="">--Choose a token--</option>
-            {POLYGON_TOKENS.map((token) => {
-              return (
-                <option key={token.address} value={token.symbol.toLowerCase()}>
-                  {token.symbol}
-                </option>
-              );
-            })}
-          </select>
-          <label htmlFor="buy-amount" className="sr-only"></label>
-          <input
-            id="buy-amount"
-            value={buyAmount}
-            className="h-9 rounded-md bg-white cursor-not-allowed text-black"
-            style={{ border: "1px solid black" }}
-            disabled
-            onChange={(e) => {
-              setTradeDirection("buy");
-              setBuyAmount(e.target.value);
-            }}
-          />
-        </section>
         <div className="text-slate-400">
           {price && price.grossBuyAmount
             ? "Affiliate Fee: " +
               Number(
                 formatUnits(
                   BigInt(price.grossBuyAmount),
-                  POLYGON_TOKENS_BY_SYMBOL[buyToken].decimals
+                  buyListElement.decimals
                 )
               ) *
                 AFFILIATE_FEE +
               " " +
-              POLYGON_TOKENS_BY_SYMBOL[buyToken].symbol
+              buyListElement.ticker
             : null}
         </div>
       </div>

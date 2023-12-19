@@ -10,7 +10,7 @@ type ListElement = {
     ticker: string; 
     img: string; 
     name: string; 
-    address: Address; 
+    address: any; 
     decimals: number;
 }
 

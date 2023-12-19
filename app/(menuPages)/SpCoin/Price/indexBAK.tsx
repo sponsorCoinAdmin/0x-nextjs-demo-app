@@ -11,7 +11,7 @@ type ListElement2 = {
   ticker: string;
   img: string;
   name: string;
-  address: Address;
+  address: any;
   decimals: number;
 }
 
@@ -40,7 +40,7 @@ type ListElement = {
   ticker: string;
   img: string;
   name: string;
-  address: Address;
+  address: any;
   decimals: number;
 }
 

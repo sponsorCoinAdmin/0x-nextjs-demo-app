@@ -3,25 +3,30 @@ import './Styles/modal.css';
 import { useRef } from 'react'
 import DataList from './DataList'
 import InputSelect from './InputSelect'
+import { type Address } from "wagmi";
+
+// import dataList from '../Resources/data/tokenEthList.json';
+import dataList from '../Dialogs/Resources/data/tokenEthList.json';
+
 
 type ListElement = {
     chainId: number;
     ticker: string; 
     img: string; 
     name: string; 
-    address: string; 
+    address: any; 
     decimals: number;
 }
 
 type Props = {
     titleName: any,
     selectElement: string,
-    dataList: ListElement[],
     onClose:  () => void,
     getDlgLstElement: (listElement: ListElement) => void,
 }
 
-export default function Dialog({ titleName, selectElement, dataList, onClose, getDlgLstElement}: Props) {
+export default function Dialog({ titleName, selectElement, onClose, getDlgLstElement}: Props) {
+// alert("PARSED dataList: ListElement[] = " + JSON.stringify(dataList, null, 2))
 
     const dialogRef = useRef<null | HTMLDialogElement>(null)
 

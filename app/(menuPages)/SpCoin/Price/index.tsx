@@ -68,6 +68,8 @@ const selectElement ='Search agent name or paste address';
 
 const AFFILIATE_FEE = 0.01; // Percentage of the buyAmount that should be attributed to feeRecipient as affiliate fees
 const FEE_RECIPIENT = "0x75A94931B81d81C7a62b76DC0FcFAC77FbE1e917"; // The ETH address that should receive affiliate fees
+const NO_SELL_AMOUNT = 100;
+const NO_BUY_AMOUNT = 100;
 
 
 export const fetcher = ([endpoint, params]: [string, PriceRequestParams]) => {
@@ -133,6 +135,10 @@ export default function PriceView({
         } else {
           setSellAmount(formatUnits(data.sellAmount, sellListElement.decimals));
         }
+      },
+      onError: ( error ) => {
+        console.log("useSWR fetcher ERROR error = " + JSON.stringify(error,null,2))
+        setBuyAmount("0");
       },
     }
   );
